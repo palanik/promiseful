@@ -1,6 +1,6 @@
-import promiseful from '../src/index.js';
 import { expect } from 'chai';
 import assert from 'assert';
+import promiseful from '../src/';
 
 describe('series', () => {
 
@@ -32,9 +32,10 @@ describe('series', () => {
       expect(ret).to.be.a('Promise');
       ret.then((res) => {
         expect(res).to.eql(['one', 'two', 'three']);
-        expect(order).to.eql([1,2,3]);
+        expect(order).to.eql([1, 2, 3]);
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('one', (done) => {
@@ -46,24 +47,46 @@ describe('series', () => {
         ]
       );
 
-      assert(ret !== null, 'Return is NOT null')
+      assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('Promise');
       ret.then((res) => {
         expect(res).to.eql(['one']);
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('zero', (done) => {
       const ret = promiseful.series([]);
 
-      assert(ret !== null, 'Return is NOT null')
+      assert(ret !== null, 'Return is NOT null');
       ret.then((res) => {
         expect(res).to.eql([]);
         done();
-      });
+      })
+      .catch(done);
     });
 
+    it('function, promise, value', (done) => {
+      const ret = promiseful.series(
+        [
+          () => new Promise((resolve, reject) =>
+            setTimeout(() => resolve('one'), 80)
+          ),
+          new Promise((resolve, reject) => {
+            setTimeout(() => resolve('two'), 50);
+          }),
+          'three'
+        ]
+      );
+
+      assert(ret !== null, 'Return is NOT null');
+      ret.then((res) => {
+        expect(res).to.eql(['one', 'two', 'three']);
+        done();
+      })
+      .catch(done);
+    });
 
   });
 
@@ -83,7 +106,7 @@ describe('series', () => {
         ]
       );
 
-      assert(ret !== null, 'Return is NOT null')
+      assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('promise');
       ret
       .catch((err) => {
@@ -107,9 +130,30 @@ describe('series', () => {
         ]
       );
 
-      assert(ret !== null, 'Return is NOT null')
+      assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('Promise');
       ret
+      .catch((err) => {
+        expect(err).to.eql('one');
+        done();
+      });
+    });
+
+    it('function, promise, value', (done) => {
+      const ret = promiseful.series(
+        [
+          () => new Promise((resolve, reject) =>
+            setTimeout(() => reject('one'), 50)
+          ),
+          new Promise((resolve, reject) =>
+            setTimeout(() => reject('two'), 80)
+          ),
+          'three'
+        ]
+      );
+
+      assert(ret !== null, 'Return is NOT null');
+      ret.then(done)
       .catch((err) => {
         expect(err).to.eql('one');
         done();
