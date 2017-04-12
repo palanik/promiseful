@@ -1,4 +1,4 @@
-export default class Promiseful {
+class Promiseful {
   static parallel(funcs) {
     return Promiseful.all(funcs);
   }
@@ -35,6 +35,9 @@ export default class Promiseful {
     });
   }
 }
+
+export default Promiseful;
+module.exports = Promiseful;
 
 /*
 console.log(
