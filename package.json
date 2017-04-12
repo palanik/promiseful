@@ -17,8 +17,9 @@
     "prepublish": "npm run build",
     "start": "node lib/",
     "dev": "./node_modules/.bin/babel-node src/",
-    "test-cov": "babel-node ./node_modules/.bin/isparta cover _mocha",
-    "test": "babel-node ./node_modules/.bin/_mocha",
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "test-mocha": "babel-node ./node_modules/.bin/_mocha",
     "browser-test": "karma start"
   },
   "keywords": [
