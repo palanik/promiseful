@@ -21,13 +21,23 @@
     "test": "babel-node ./node_modules/.bin/_mocha",
     "browser-test": "karma start"
   },
+  "keywords": [
+    "promise",
+    "promises",
+    "promiseful",
+    "promise functions",
+    "control flow",
+    "promise flow",
+    "async",
+    "asynchronous"
+  ],
   "engines": {
     "node": ">=6.1.0",
     "npm": ">=3.8.6"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/palanik/node-es6-starter.git"
+    "url": "https://github.com/palanik/promiseful.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
