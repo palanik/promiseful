@@ -38,6 +38,7 @@ jspm_packages
 
 # Babel transpiled code directory
 lib
+lib-test
 
 # npm pack
 *.tgz
