@@ -1,6 +1,6 @@
 {
   "name": "promiseful",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Useful patterns with Promise functions",
   "main": "lib/index.js",
   "babel": {
@@ -52,6 +52,7 @@
     "babelify": "^7.3.0",
     "browserify": "^14.3.0",
     "chai": "^3.5.0",
+    "coveralls": "^2.13.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
