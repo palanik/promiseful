@@ -1,10 +1,27 @@
+function chunk(array, n) {
+  if (n <= array.length) {
+    return [array];
+  }
+
+  const ret = [];
+  for (let i = 0; i < array.length; i += n) {
+    ret.push(array.slice(i, i + n));
+  }
+
+  return ret;
+}
+
+function flatten(arrays) {
+  return [].concat(...arrays);
+}
+
 class Promiseful {
   static fulfil(val) {
     if (typeof val === 'function') {
       return val;
     }
 
-    // Is this a Promise
+    // Is this a Promise?
     if (typeof val === 'object'
       && val.then
       && typeof val.then === 'function') {
@@ -19,6 +36,18 @@ class Promiseful {
     return Promiseful.all(funcs);
   }
 
+  static parallelLimit(funcs, limit) {
+    if (limit <= funcs.length) {
+      return Promiseful.parallel(funcs);
+    }
+
+    const funcsList = chunk(funcs, limit)
+      .map(c => (() => Promiseful.parallel(c)));
+
+    return Promiseful.series(funcsList)
+      .then(flatten);
+  }
+
   static all(funcs) {
     return Promise.all(funcs.map(a => Promiseful.fulfil(a)).map(a => a()));
   }
@@ -27,6 +56,7 @@ class Promiseful {
     if (funcs.length < 1) {
       return Promise.resolve(null);
     }
+    
     return Promise.race(funcs.map(a => Promiseful.fulfil(a)).map(a => a()));
   }
 
