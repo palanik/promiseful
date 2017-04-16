@@ -1,36 +1,6 @@
-function chunk(array, n) {
-  if (n <= array.length) {
-    return [array];
-  }
+import utils from './utils/index';
 
-  const ret = [];
-  for (let i = 0; i < array.length; i += n) {
-    ret.push(array.slice(i, i + n));
-  }
-
-  return ret;
-}
-
-function flatten(arrays) {
-  return [].concat(...arrays);
-}
-
-class Promiseful {
-  static fulfil(val) {
-    if (typeof val === 'function') {
-      return val;
-    }
-
-    // Is this a Promise?
-    if (typeof val === 'object'
-      && val.then
-      && typeof val.then === 'function') {
-      return () => val;
-    }
-
-    // Anything else, wrap into a promise into a function
-    return () => Promise.resolve(val);
-  }
+export default class Promiseful {
 
   static parallel(funcs) {
     return Promiseful.all(funcs);
@@ -41,23 +11,23 @@ class Promiseful {
       return Promiseful.parallel(funcs);
     }
 
-    const funcsList = chunk(funcs, limit)
+    const funcsList = utils.collection.chunk(funcs, limit)
       .map(c => (() => Promiseful.parallel(c)));
 
     return Promiseful.series(funcsList)
-      .then(flatten);
+      .then(utils.collection.flatten);
   }
 
   static all(funcs) {
-    return Promise.all(funcs.map(a => Promiseful.fulfil(a)).map(a => a()));
+    return Promise.all(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
   }
 
   static race(funcs) {
     if (funcs.length < 1) {
       return Promise.resolve(null);
     }
-    
-    return Promise.race(funcs.map(a => Promiseful.fulfil(a)).map(a => a()));
+
+    return Promise.race(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
   }
 
   static series(funcs) {
@@ -68,7 +38,7 @@ class Promiseful {
           return;
         }
 
-        const p = Promiseful.fulfil(funcs[idx])();
+        const p = utils.internal.fulfil(funcs[idx])();
         p.then(
           (val) => {
             acc.push(val);
@@ -82,13 +52,3 @@ class Promiseful {
     });
   }
 }
-
-export default Promiseful;
-module.exports = Promiseful;
-
-/*
-console.log(
-  Object.getOwnPropertyNames(Promiseful)
-  .filter(prop => typeof Promiseful[prop] === "function")
-);
-*/
