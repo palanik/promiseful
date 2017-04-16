@@ -47,8 +47,9 @@ pf.then((results) => {
 ```
 
 #### See also:
-* `promiseful.parallelLimit`
+* [`promiseful.parallelLimit`](#promisefulparallellimitfuncs-limit)
 * [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+* [`promiseful.series`](#promisefulseriesfuncs)
 
 
 ### `promiseful.parallelLimit(funcs, limit)`
@@ -91,7 +92,8 @@ pf.then((results) => {
 ```
 
 #### See also:
-* `promiseful.parallel`
+* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
+* [`promiseful.series`](#promisefulseriesfuncs)
 
 
 ### `promiseful.series(funcs)`
@@ -127,7 +129,7 @@ pf.then((results) => {
 ```
 
 #### See also:
-* `promiseful.parallel`
+* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
 
 
 ### `promiseful.race(funcs)`
@@ -161,7 +163,7 @@ pf.then((result) => {
 ```
 
 #### See also:
-* `promiseful.parallel`
+* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
 * [Promise.race](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
 
 ## License
