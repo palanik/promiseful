@@ -17,10 +17,12 @@
     "prepublish": "npm run build",
     "start": "node lib/",
     "dev": "./node_modules/.bin/babel-node src/",
-    "test": "babel-node ./node_modules/.bin/isparta cover _mocha",
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "test-mocha": "babel-node ./node_modules/.bin/_mocha",
-    "browser-test": "karma start"
+    "test-mocha": "babel-node ./node_modules/.bin/_mocha --recursive",
+    "browser-test": "karma start",
+    "browserify": "npm run build && mkdir -p dist && browserify -o dist/promiseful.js -d src/ -t -t babelify --presets es2015 --sourceMapsAbsolute",
+    "rollup": "rollup -c"
   },
   "keywords": [
     "promise",
@@ -64,6 +66,7 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.3",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "rollup": "^0.41.6"
   }
 }
