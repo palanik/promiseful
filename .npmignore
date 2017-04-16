@@ -22,5 +22,6 @@ History.md
 karma.conf.js
 rollup.config.js
 dist/
-
+.babelrc
+.babelrc.rollup
 test.html

@@ -12,6 +12,8 @@ Useful patterns with Promise functions
 $ npm install promiseful --save
 ```
 
+To use in the browser, download the library from [dist](dist) folder.
+
 ## API
 
 A **promiseful function** is a function that returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
