@@ -18,4 +18,9 @@ coverage/
 *.sh
 *.log
 *.tgz
+History.md
 karma.conf.js
+rollup.config.js
+dist/
+
+test.html

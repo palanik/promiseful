@@ -46,3 +46,5 @@ lib-test
 
 #mac specific
 .DS_Store
+
+test.html
