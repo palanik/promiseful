@@ -1,10 +1,10 @@
 module.exports = function(config) {
     config.set({
         browsers: ['Chrome'],
-        files: ['test/*.js'],
+        files: ['test/**/*.js'],
         frameworks: ['browserify', 'mocha'],
         preprocessors: {
-            'test/*.js': ['browserify']
+            'test/**/*.js': ['browserify']
         },
         reporters: ['mocha'],
         singleRun: true,
