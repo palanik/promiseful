@@ -17,21 +17,36 @@ To use in the browser, download the library from [dist](dist) folder.
 
 A **promiseful function** is a function that returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
+e.g.
+```JS
+function readPasswd() {
+  return new Promise((resolve, reject) => {
+    fs.readFile('/etc/passwd', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+```
+
 The API works with **promiseful functions**. Do not pass **Promise** objects.
 
-* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
-* [`promiseful.all`](#promisefulparallelfuncs-or-promisefulallfuncs)
-* [`promiseful.parallelLimit`](#promisefulparallellimitfuncs-limit)
-* [`promiseful.series`](#promisefulseriesfuncs)
-* [`promiseful.race`](#promisefulracefuncs)
+* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
+* [`promiseful.all`](#promisefulparallelfns-or-promisefulallfns)
+* [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit)
+* [`promiseful.series`](#promisefulseriesfns)
+* [`promiseful.race`](#promisefulracefns)
 
 
-### `promiseful.parallel(funcs)` or `promiseful.all(funcs)`
+### `promiseful.parallel(fns)` or `promiseful.all(fns)`
 > Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
 
 #### Parameters
-* funcs
-> An array of **promiseful functions**
+* `fns`
+    > An array of **promiseful functions**
 
 #### Example
 ```JS
@@ -55,21 +70,21 @@ pf.then((results) => {
 ```
 
 #### See also:
-* [`promiseful.parallelLimit`](#promisefulparallellimitfuncs-limit)
+* [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit)
 * [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
-* [`promiseful.series`](#promisefulseriesfuncs)
+* [`promiseful.series`](#promisefulseriesfns)
 
 
-### `promiseful.parallelLimit(funcs, limit)`
+### `promiseful.parallelLimit(fns, limit)`
 
 > Same as `promiseful.parallel`, but invokes a maximum of `limit` functions at a time.
 
 #### Parameters
-* funcs
-> An array of **promiseful functions**
+* `fns`
+    > An array of **promiseful functions**
 
-* limit
-> Maximum number of **promiseful functions** to invoke at a time
+* `limit`
+    > Maximum number of **promiseful functions** to invoke at a time
 
 #### Example
 ```JS
@@ -100,19 +115,19 @@ pf.then((results) => {
 ```
 
 #### See also:
-* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
-* [`promiseful.series`](#promisefulseriesfuncs)
+* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
+* [`promiseful.series`](#promisefulseriesfns)
 
 
-### `promiseful.series(funcs)`
+### `promiseful.series(fns)`
 
 > Runs each of the **promiseful functions**,  running once the previous function has completed.
 
 > Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
 
 #### Parameters
-* funcs
-> An array of **promiseful functions**
+* `fns`
+    > An array of **promiseful functions**
 
 #### Example
 ```JS
@@ -137,16 +152,16 @@ pf.then((results) => {
 ```
 
 #### See also:
-* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
+* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
 
 
-### `promiseful.race(funcs)`
+### `promiseful.race(fns)`
 
 > Runs the functions in parallel. Returns immediately once any of the function resolves or rejects. It's equivalent to Promise.race().
 
 #### Parameters
-* funcs
-> An array of **promiseful functions**
+* `fns`
+    > An array of **promiseful functions**
 
 #### Example
 ```JS
@@ -171,7 +186,7 @@ pf.then((result) => {
 ```
 
 #### See also:
-* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
+* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
 * [Promise.race](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
 
 ## Examples
