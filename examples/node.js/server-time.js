@@ -2,12 +2,12 @@ var https = require('https');
 var promiseful = require('../../lib/');
 
 const sites = {
-  'Google': 'www.google.com',
-  'Bing': 'www.bing.com',
-  'Yahoo': 'www.yahoo.com'
+  Google: 'www.google.com',
+  Bing: 'www.bing.com',
+  Yahoo: 'www.yahoo.com'
 };
 
-const funcs = Object.keys(sites).map((s) =>
+const funcs = Object.keys(sites).map(s =>
   () => new Promise(
     (resolve, reject) => {
       const req = https.request(
@@ -17,7 +17,7 @@ const funcs = Object.keys(sites).map((s) =>
           path: '/',
           method: 'HEAD'
         },
-        (response) => resolve({ [s]: response.headers['date']})
+        response => resolve({ [s]: response.headers['date'] })
       );
 
       req.on('error', reject);
