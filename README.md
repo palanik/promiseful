@@ -3,7 +3,6 @@ Useful patterns with Promise functions
 
 [![NPM version](https://img.shields.io/npm/v/promiseful.svg?style=flat)](https://www.npmjs.org/package/promiseful)
 [![Build Status](https://img.shields.io/travis/palanik/promiseful.svg?style=flat)](https://travis-ci.org/palanik/promiseful)
-[![Coverage Status](https://coveralls.io/repos/palanik/promiseful/badge.svg?service=github)](https://coveralls.io/github/palanik/promiseful)
 [![Known Vulnerabilities](https://snyk.io/test/github/palanik/promiseful/badge.svg)](https://snyk.io/test/github/palanik/promiseful)
 
 ## Installation
@@ -19,6 +18,13 @@ To use in the browser, download the library from [dist](dist) folder.
 A **promiseful function** is a function that returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 The API works with **promiseful functions**. Do not pass **Promise** objects.
+
+* [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
+* [`promiseful.all`](#promisefulparallelfuncs-or-promisefulallfuncs)
+* [`promiseful.parallelLimit`](#promisefulparallellimitfuncs-limit)
+* [`promiseful.series`](#promisefulseriesfuncs)
+* [`promiseful.race`](#promisefulracefuncs)
+
 
 ### `promiseful.parallel(funcs)` or `promiseful.all(funcs)`
 > Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
@@ -167,6 +173,14 @@ pf.then((result) => {
 #### See also:
 * [`promiseful.parallel`](#promisefulparallelfuncs-or-promisefulallfuncs)
 * [Promise.race](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
+
+## Examples
+
+### Node.js
+1. [server-time](examples/node.js/server-time.js)
+
+### Browser
+1. [fetch-image-dimension](examples/browser/fetch-image-dimension.html)
 
 ## License
 

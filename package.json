@@ -34,7 +34,8 @@
     "async",
     "asynchronous",
     "parallel",
-    "series"
+    "series",
+    "race"
   ],
   "engines": {
     "node": ">=6.1.0",
