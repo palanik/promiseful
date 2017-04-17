@@ -32,7 +32,9 @@
     "control flow",
     "promise flow",
     "async",
-    "asynchronous"
+    "asynchronous",
+    "parallel",
+    "series"
   ],
   "engines": {
     "node": ">=6.1.0",
