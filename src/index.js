@@ -1,7 +1,7 @@
-const promiseful = require('./promiseful');
+import promiseful from './promiseful';
 
 export default promiseful;
-module.exports = promiseful.default;
+module.exports = promiseful;
 
 /*
 console.log(
