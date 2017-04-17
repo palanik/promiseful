@@ -1,0 +1,46 @@
+<html>
+  <body>
+    <script src="../../dist/0.1.0/promiseful.min.js"></script>
+    <script>
+    const sites = {
+      'Google': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+      'Bing': 'https://www.bing.com/th?id=A4db183067e2f5a1612832c3ec1fad055',
+      'Yahoo': 'https://s.yimg.com/zz/nn/lib/metro/g/my/yahoo_en-US_f_p_190x45_2x.png'
+    };
+
+    const funcs = Object.keys(sites).map((s) =>
+      () => new Promise(
+        (resolve, reject) => {
+          // Load images asyncronously
+          const img = new Image();
+          img.addEventListener('load', function(ev) {
+            // Save image's natural dimension
+            const trgt = ev.originalTarget || ev.currentTarget || ev.path[0];
+            resolve({
+              [s]: {
+                width: trgt.naturalWidth,
+                height: trgt.naturalHeight
+              }
+            });
+          }, false);
+
+          // Set src
+          img.src = sites[s];
+        }
+      )
+    );
+
+
+    // Call functions in parallel
+    promiseful.parallelLimit(funcs, 2)
+    .then((res) => {
+      res.forEach((r) => {
+        const k = Object.keys(r)[0];
+        console.log(`${k} - ${r[k].width}x${r[k].height} - ${sites[k]}`);
+      });
+    })
+    .catch(console.error);
+   </script>
+   <p>Check console.logs</p>
+  </body>
+</html>

@@ -48,3 +48,4 @@ lib-test
 .DS_Store
 
 test.html
+src/server-time.js

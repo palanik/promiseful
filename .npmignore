@@ -25,3 +25,4 @@ dist/
 .babelrc
 .babelrc.rollup
 test.html
+lib/server-time.js
