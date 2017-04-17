@@ -19,19 +19,19 @@ export default class Promiseful {
   }
 
   static all(funcs) {
-    return Promise.all(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
+    return Promiseful.Promise.all(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
   }
 
   static race(funcs) {
     if (funcs.length < 1) {
-      return Promise.resolve(null);
+      return Promiseful.Promise.resolve(null);
     }
 
-    return Promise.race(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
+    return Promiseful.Promise.race(funcs.map(a => utils.internal.fulfil(a)).map(a => a()));
   }
 
   static series(funcs) {
-    return new Promise((resolve, reject) => {
+    return new Promiseful.Promise((resolve, reject) => {
       function next(idx, acc) {
         if (idx >= funcs.length) {
           resolve(acc);
@@ -51,4 +51,8 @@ export default class Promiseful {
       next(0, []);
     });
   }
+}
+
+if (typeof Promise !== 'undefined') {
+  Promiseful.Promise = Promise;
 }

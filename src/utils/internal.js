@@ -1,3 +1,5 @@
+import Promiseful from '../promiseful';
+
 export default class internal {
   static fulfil(val) {
     if (typeof val === 'function') {
@@ -12,6 +14,6 @@ export default class internal {
     }
 
     // Anything else, wrap into a promise into a function
-    return () => Promise.resolve(val);
+    return () => Promiseful.Promise.resolve(val);
   }
 }
