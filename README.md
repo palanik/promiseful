@@ -13,11 +13,46 @@ $ npm install promiseful --save
 
 To use in the browser, download the library from [dist](dist) folder.
 
+## Usage
+
+### node.js
+promiseful uses native ES2015 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+To use non-native, 3rd-party `Promise` libraries, like [bluebird](http://bluebirdjs.com/) or [Promise polyfill](https://github.com/jakearchibald/es6-promise/), call `promiseful.promise()` with the `Promise` object, before using the API.
+
+e.g.:
+```JS
+var Promise = require('bluebird');
+// var Promise = require('es6-promise');
+// var Promise = require('pinkie-promise');
+
+var promiseful = require('promiseful');
+
+promiseful.promise(Promise);
+```
+
+See [example](examples/node.js/es5/server-time.js)
+
+### Browser
+promiseful uses native ES2015 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+To use non-native, 3rd-party `Promise` libraries, like [bluebird](http://bluebirdjs.com/) or [Promise polyfill](https://github.com/jakearchibald/es6-promise/), include the library, before including promiseful.
+
+e.g.:
+```HTML
+<script src="https://cdn.jsdelivr.net/bluebird/latest/bluebird.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.0/es6-promise.min.js"></script> -->
+<script src="promiseful.js"></script>
+```
+
+See [example](examples/browsers/bluebird.html)
+
+
 ## API
 
 A **promiseful function** is a function that returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-e.g.
+e.g.:
 ```JS
 function readPasswd() {
   return new Promise((resolve, reject) => {
@@ -34,168 +69,21 @@ function readPasswd() {
 
 The API works with **promiseful functions**. Do not pass **Promise** objects.
 
-* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
-* [`promiseful.all`](#promisefulparallelfns-or-promisefulallfns)
-* [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit)
-* [`promiseful.series`](#promisefulseriesfns)
-* [`promiseful.race`](#promisefulracefns)
+Methods follow pattern, similar to the excellent [caolan/async](https://github.com/caolan/async) library.
 
+### API Documentation
 
-### `promiseful.parallel(fns)` or `promiseful.all(fns)`
-> Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
-
-#### Parameters
-* `fns`
-    > An array of **promiseful functions**
-
-#### Example
-```JS
-const pf = promiseful.parallel(
-  [
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('one'), 50)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('two'), 80)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('three'), 30)
-    )
-  ]
-);
-
-pf.then((results) => {
-  // The results array will be ['one', 'two', 'three']
-});
-```
-
-#### See also:
-* [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit)
-* [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
-* [`promiseful.series`](#promisefulseriesfns)
-
-
-### `promiseful.parallelLimit(fns, limit)`
-
-> Same as `promiseful.parallel`, but invokes a maximum of `limit` functions at a time.
-
-#### Parameters
-* `fns`
-    > An array of **promiseful functions**
-
-* `limit`
-    > Maximum number of **promiseful functions** to invoke at a time
-
-#### Example
-```JS
-const pf = promiseful.parallelLimit(
-  [
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('one'), 50)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('two'), 80)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('three'), 30)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('four'), 70)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('five'), 40)
-    )
-  ],
-  2
-);
-
-pf.then((results) => {
-  // The results array will be ['one', 'two', 'three', 'four', 'five']
-});
-```
-
-#### See also:
-* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
-* [`promiseful.series`](#promisefulseriesfns)
-
-
-### `promiseful.series(fns)`
-
-> Runs each of the **promiseful functions**,  running once the previous function has completed.
-
-> Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
-
-#### Parameters
-* `fns`
-    > An array of **promiseful functions**
-
-#### Example
-```JS
-const pf = promiseful.series(
-  [
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('one'), 50)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('two'), 80)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('three'), 30)
-    )
-  ],
-  2
-);
-
-pf.then((results) => {
-  // The results array will be ['one', 'two', 'three']
-});
-```
-
-#### See also:
-* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
-
-
-### `promiseful.race(fns)`
-
-> Runs the functions in parallel. Returns immediately once any of the function resolves or rejects. It's equivalent to Promise.race().
-
-#### Parameters
-* `fns`
-    > An array of **promiseful functions**
-
-#### Example
-```JS
-const pf = promiseful.race(
-  [
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('one'), 50)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('two'), 80)
-    ),
-    () => new Promise((resolve, reject) =>
-      setTimeout(() => resolve('three'), 30)
-    )
-  ],
-  2
-);
-
-pf.then((result) => {
-  // The value of result will be 'three'
-});
-```
-
-#### See also:
-* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
-* [Promise.race](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
+  [API](API.md)
 
 ## Examples
 
 ### Node.js
 1. [server-time](examples/node.js/server-time.js)
+2. [es5](examples/node.js/es5/server-time.js)
 
 ### Browser
 1. [fetch-image-dimension](examples/browser/fetch-image-dimension.html)
+2. [bluebird](examples/browser/bluebird.html)
 
 ## License
 

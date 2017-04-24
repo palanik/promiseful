@@ -26,3 +26,4 @@ dist/
 .babelrc.rollup
 test.html
 lib/server-time.js
+API.md
