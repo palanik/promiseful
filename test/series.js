@@ -109,6 +109,7 @@ describe('series', () => {
       assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('promise');
       ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql('one');
         done();
@@ -133,6 +134,7 @@ describe('series', () => {
       assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('Promise');
       ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql('one');
         done();
@@ -153,7 +155,8 @@ describe('series', () => {
       );
 
       assert(ret !== null, 'Return is NOT null');
-      ret.then(done)
+      ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql('one');
         done();

@@ -2,6 +2,8 @@ import { expect } from 'chai';
 import assert from 'assert';
 import promiseful from '../src/';
 
+//process.on('unhandledRejection', r => console.log(r));
+
 describe('waterfall', () => {
 
   describe('resolve', () => {
@@ -112,6 +114,7 @@ describe('waterfall', () => {
       assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('promise');
       ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql(4);
         done();
@@ -137,6 +140,7 @@ describe('waterfall', () => {
       assert(ret !== null, 'Return is NOT null');
       expect(ret).to.be.a('Promise');
       ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql(2);
         done();
@@ -157,7 +161,8 @@ describe('waterfall', () => {
       );
 
       assert(ret !== null, 'Return is NOT null');
-      ret.then(done)
+      ret
+      .then(done)
       .catch((err) => {
         expect(err).to.eql('one');
         done();
