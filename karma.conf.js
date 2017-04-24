@@ -1,6 +1,6 @@
 module.exports = function(config) {
     config.set({
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'Firefox'],
         files: ['test/**/*.js'],
         frameworks: ['browserify', 'mocha'],
         preprocessors: {
