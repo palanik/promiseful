@@ -1,5 +1,10 @@
 export default class Collection {
-  static chunk(array, n) {
+  static arrayize(coll) {
+    return Array.isArray(coll) ? coll : Array.from(coll);
+  }
+
+  static chunk(coll, n) {
+    const array = Collection.arrayize(coll);
     if (n <= 0 || n >= array.length) {
       return [array];
     }
