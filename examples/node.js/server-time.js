@@ -4,7 +4,8 @@ var promiseful = require('../../lib/');
 const sites = {
   Google: 'www.google.com',
   Bing: 'www.bing.com',
-  Yahoo: 'www.yahoo.com'
+  Yahoo: 'www.yahoo.com',
+  DuckDuckGo: 'www.duckduckgo.com'
 };
 
 const funcs = Object.keys(sites).map(s =>
