@@ -1,10 +1,12 @@
-var Promise = require('bluebird');
-// var Promise = require('es6-promise');
+// var Promise = require('bluebird');
+var Promise = require('es6-promise');
+// var Promise = require('pinkie-promise');
+
+// var promiseful = require('../../../lib/');
+// promiseful.promise(Promise);
+var promiseful = require('../../../lib/').promise(Promise);
 
 var https = require('https');
-var promiseful = require('../../../lib/');
-
-promiseful.Promise = Promise;
 
 var sites = {
   'Google': 'www.google.com',
