@@ -1,6 +1,6 @@
 {
   "name": "promiseful",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Useful patterns with Promise functions",
   "main": "lib/index.js",
   "babel": {
@@ -31,6 +31,9 @@
     "promise functions",
     "control flow",
     "promise flow",
+    "resolve",
+    "reject",
+    "fulfil",
     "async",
     "asynchronous",
     "parallel",

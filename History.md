@@ -1,3 +1,10 @@
+0.1.1 / 2017-04-24
+==================
+
+ * Support for non-native, 3rd-party `Promise` libraries and polyfills
+ * promiseful.waterfall
+
+
 0.1.0 / 2017-04-16
 ==================
 
