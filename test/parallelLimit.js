@@ -196,6 +196,33 @@ describe('parallelLimit', () => {
       });
     });
 
+    it('any from the 1st batch of 3 batches', (done) => {
+      const funcs = [];
+      for (let i = 0; i < 15; i++) {
+        let ts = Math.floor(i/5) - 1;
+        if (ts < 0) {
+          ts = 2;
+        }
+        const tm = Math.round(1 + (ts * 50) + Math.random() * 50);
+        funcs.push(
+          () => new Promise(
+            (resolve, reject) => setTimeout(
+              () => reject(Math.floor(i)) ,
+              tm
+            )
+          )
+        );
+      }
+
+      const ret = promiseful.parallelLimit(funcs, 3);
+
+      assert(ret !== null, 'Return is NOT null');
+      ret.then(done)
+      .catch((err) => {
+        expect(err).to.be.oneOf([0, 1, 2, 3, 4]);
+        done();
+      });
+    });
 
   });
 

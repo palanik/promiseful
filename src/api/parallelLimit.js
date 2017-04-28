@@ -4,7 +4,7 @@ import series from './series';
 
 export default function parallelLimit(fns, limit) {
   const funcs = utils.collection.arrayize(fns);
-  if (limit <= funcs.length) {
+  if (limit >= funcs.length) {
     return core.all(funcs);
   }
 
