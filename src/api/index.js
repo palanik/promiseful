@@ -3,6 +3,10 @@ import series from './series';
 import parallelLimit from './parallelLimit';
 import waterfall from './waterfall';
 
+import applyEach from './functions/applyEach';
+
+import each from './collections/each';
+
 const Promiseful = {
 
   // core
@@ -21,6 +25,13 @@ const Promiseful = {
   every: core.all.bind(core),
   inject: core.reduce.bind(core),
   fold: core.reduce.bind(core),
+
+  // Collections
+  each,
+  concat: each,
+
+  // Functions
+  applyEach,
 };
 
 Promiseful.promise = (P) => {

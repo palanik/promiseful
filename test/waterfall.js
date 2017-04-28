@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import assert from 'assert';
 import promiseful from '../src/';
 
-//process.on('unhandledRejection', r => console.log(r));
+// process.on('unhandledRejection', r => console.log(r));
 
 describe('waterfall', () => {
 
