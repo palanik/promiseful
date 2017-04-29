@@ -6,14 +6,22 @@ class Functions {
   }
 
 
-  attachMethod(name, fn) {
-    this[name] = fn.bind(null, this.coll);
+  attachMethod(name, fn, ...thens) {
+    // this[name] = fn.bind(null, this.coll);
+    this[name] = (...args) => {
+      const m = fn(this.coll, ...args);
+      return thens.reduce((acc, t) => {
+          acc = acc.then(t);
+          return acc;
+      },
+      m);
+    }
     return this;
   }
 
-  attachKernel() {
+  attachKernel(...thens) {
     Object.keys(kernel)
-      .forEach(f => this.attachMethod(f, kernel[f]));
+      .forEach(f => this.attachMethod(f, kernel[f], ...thens));
     return this;
   }
 }
