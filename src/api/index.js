@@ -4,6 +4,7 @@ import parallelLimit from './parallelLimit';
 import waterfall from './waterfall';
 
 import applyEach from './functions/applyEach';
+import times from './functions/times';
 
 import each from './collections/each';
 import eachOf from './collections/eachOf';
@@ -37,6 +38,7 @@ const Promiseful = {
 
   // Functions
   applyEach,
+  times,
 };
 
 Promiseful.promise = (P) => {
