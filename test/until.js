@@ -26,6 +26,28 @@ describe('until', () => {
     .catch(done);
   });
 
+  it('0 times', (done) => {
+    const a = [];
+    const ret = promiseful.until(
+      (v) => true,
+      () => new Promise((resolve, reject) => {
+          a.push(a.length);
+          setTimeout(() => resolve(a.length), 50);
+        }
+      ),
+      0
+    );
+
+    assert(ret !== null, 'Return is NOT null');
+    expect(ret).to.be.a('Promise');
+    ret.then((val) => {
+      expect(val).to.eql(0);
+      expect(a.length).to.eql(0);
+      done();
+    })
+    .catch(done);
+  });
+
   it('reject', (done) => {
     const a = [];
     const ret = promiseful.until(

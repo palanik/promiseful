@@ -27,4 +27,22 @@ describe('forever', () => {
     });
   });
 
+  it('0 times', (done) => {
+    const a = [];
+    const ret = promiseful.forever(
+      () => new Promise((resolve, reject) => {
+          setTimeout(() => reject(), 50);
+        }
+      )
+    );
+
+    assert(ret !== null, 'Return is NOT null');
+    expect(ret).to.be.a('Promise');
+    ret.then(done)
+    .catch(() => {
+      expect(a.length).to.eql(0);
+      done();
+    });
+  });
+
 });

@@ -106,7 +106,7 @@ class Promiseful {
       }
 
       if (breaker(initValue)) {
-        resolve();
+        resolve(initValue);
         return;
       }
 
