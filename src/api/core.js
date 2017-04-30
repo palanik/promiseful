@@ -87,6 +87,32 @@ class Promiseful {
       next(0, inital);
     });
   }
+
+  loop(fn, breaker, initValue) {
+    const func = this.fulfil(fn);
+
+    return new this.Promise((resolve, reject) => {
+      function next() {
+        func()
+        .then((v) => {
+          if (breaker(v)) {
+            resolve(v);
+          }
+          else {
+            next();
+          }
+        })
+        .catch(reject);
+      }
+
+      if (breaker(initValue)) {
+        resolve();
+        return;
+      }
+
+      next();
+    });
+  }
 }
 
 const instance = new Promiseful((typeof Promise !== 'undefined') ? Promise : null);
