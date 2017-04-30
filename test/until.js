@@ -4,7 +4,7 @@ import promiseful from '../src/';
 
 describe('until', () => {
 
-  it('10 times', (done) => {
+  it('10 times - before', (done) => {
     const a = [];
     const ret = promiseful.until(
       (v) => v >= 10,
@@ -43,6 +43,48 @@ describe('until', () => {
     ret.then((val) => {
       expect(val).to.eql(0);
       expect(a.length).to.eql(0);
+      done();
+    })
+    .catch(done);
+  });
+
+  it('10 times - after', (done) => {
+    const a = [];
+    const ret = promiseful.until(
+      (v) => v >= 10,
+      () => new Promise((resolve, reject) => {
+          a.push(a.length);
+          setTimeout(() => resolve(a.length), 50);
+        }
+      )
+    );
+
+    assert(ret !== null, 'Return is NOT null');
+    expect(ret).to.be.a('Promise');
+    ret.then((val) => {
+      expect(val).to.eql(10);
+      expect(a.length).to.eql(10);
+      done();
+    })
+    .catch(done);
+  });
+
+  it('1 time', (done) => {
+    const a = [];
+    const ret = promiseful.until(
+      (v) => true,
+      () => new Promise((resolve, reject) => {
+          a.push(a.length);
+          setTimeout(() => resolve(a.length), 50);
+        }
+      )
+    );
+
+    assert(ret !== null, 'Return is NOT null');
+    expect(ret).to.be.a('Promise');
+    ret.then((val) => {
+      expect(val).to.eql(1);
+      expect(a.length).to.eql(1);
       done();
     })
     .catch(done);
