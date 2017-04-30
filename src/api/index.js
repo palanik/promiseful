@@ -2,6 +2,9 @@ import core from './core';
 import series from './series';
 import parallelLimit from './parallelLimit';
 import waterfall from './waterfall';
+import forever from './forever';
+import until from './until';
+import whilst from './whilst';
 
 import applyEach from './functions/applyEach';
 import times from './functions/times';
@@ -39,6 +42,9 @@ const Promiseful = {
   // Functions
   applyEach,
   times,
+  forever,
+  until,
+  whilst,
 };
 
 Promiseful.promise = (P) => {
