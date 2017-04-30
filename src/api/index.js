@@ -6,6 +6,9 @@ import waterfall from './waterfall';
 import applyEach from './functions/applyEach';
 
 import each from './collections/each';
+import eachOf from './collections/eachOf';
+import map from './collections/map';
+import mapOf from './collections/mapOf';
 
 const Promiseful = {
 
@@ -28,7 +31,9 @@ const Promiseful = {
 
   // Collections
   each,
-  concat: each,
+  eachOf,
+  map,
+  mapOf,
 
   // Functions
   applyEach,
