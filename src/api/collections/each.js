@@ -6,5 +6,5 @@ export default function each(data, fn) {
     .map(d => fn.bind(null, d));
 
   const coll = new collector.Functions(funcs);
-  return coll.attachKernel((v) => undefined);
+  return coll.attachKernel(() => undefined);
 }

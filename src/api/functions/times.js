@@ -1,9 +1,8 @@
 import collector from './collector';
-import utils from '../../utils/index';
 
 export default function times(n, fn) {
   const funcs = [];
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i += 1) {
     funcs.push(fn.bind(null, i));
   }
 

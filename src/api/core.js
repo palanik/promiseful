@@ -87,7 +87,7 @@ class Promiseful {
       next(0, inital);
     });
   }
-  
+
   reduceRejects(fns, reducer, inital) {
     const funcs = utils.collection.arrayize(fns);
     const self = this;
@@ -102,7 +102,7 @@ class Promiseful {
         const p = self.fulfil(funcs[idx]);
         reducer(acc, p, idx)
         .then(resolve)
-        .catch(next.bind(this, idx + 1))
+        .catch(next.bind(this, idx + 1));
       }
 
       next(0, inital);
@@ -118,8 +118,7 @@ class Promiseful {
         .then((v) => {
           if (breaker(v)) {
             resolve(v);
-          }
-          else {
+          } else {
             next();
           }
         })

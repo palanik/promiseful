@@ -8,7 +8,7 @@ export default function relay(fns) {
       .catch((reason) => {
         acc.push(reason);
         reject(acc);
-      })
+      });
     });
   }
 

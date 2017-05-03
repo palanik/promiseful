@@ -34,7 +34,7 @@ const Promiseful = {
   every: core.all.bind(core),
   inject: core.reduce.bind(core),
   fold: core.reduce.bind(core),
-  tryEach : relay,
+  tryEach: relay,
 
   // Collections
   each,

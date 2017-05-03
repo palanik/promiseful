@@ -10,12 +10,9 @@ class Functions {
     // this[name] = fn.bind(null, this.coll);
     this[name] = (...args) => {
       const m = fn(this.coll, ...args);
-      return thens.reduce((acc, t) => {
-          acc = acc.then(t);
-          return acc;
-      },
-      m);
-    }
+      return thens.reduce((acc, t) => acc.then(t), m);
+    };
+
     return this;
   }
 
