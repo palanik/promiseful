@@ -87,6 +87,27 @@ class Promiseful {
       next(0, inital);
     });
   }
+  
+  reduceRejects(fns, reducer, inital) {
+    const funcs = utils.collection.arrayize(fns);
+    const self = this;
+
+    return new this.Promise((resolve, reject) => {
+      function next(idx, acc) {
+        if (idx >= funcs.length) {
+          reject(acc);
+          return;
+        }
+
+        const p = self.fulfil(funcs[idx]);
+        reducer(acc, p, idx)
+        .then(resolve)
+        .catch(next.bind(this, idx + 1))
+      }
+
+      next(0, inital);
+    });
+  }
 
   loop(fn, breaker, ...initValue) {
     const func = this.fulfil(fn);

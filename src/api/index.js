@@ -5,6 +5,7 @@ import waterfall from './waterfall';
 import forever from './forever';
 import until from './until';
 import whilst from './whilst';
+import relay from './relay';
 
 import applyEach from './functions/applyEach';
 import times from './functions/times';
@@ -27,11 +28,13 @@ const Promiseful = {
   parallel: core.all.bind(core),
   parallelLimit,
   waterfall,
+  relay,
 
   // aliases
   every: core.all.bind(core),
   inject: core.reduce.bind(core),
   fold: core.reduce.bind(core),
+  tryEach : relay,
 
   // Collections
   each,
