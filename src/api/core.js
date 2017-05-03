@@ -88,7 +88,7 @@ class Promiseful {
     });
   }
 
-  loop(fn, breaker, initValue) {
+  loop(fn, breaker, ...initValue) {
     const func = this.fulfil(fn);
 
     return new this.Promise((resolve, reject) => {
@@ -105,8 +105,8 @@ class Promiseful {
         .catch(reject);
       }
 
-      if (breaker(initValue)) {
-        resolve(initValue);
+      if (initValue.length > 0 && breaker(...initValue)) {
+        resolve(...initValue);
         return;
       }
 
