@@ -39,7 +39,20 @@ _________________________________________________
 ### Collections
 A set of functions for manipulating collections.
 
-Invoking collection functions is a two step process. First apply promiseful to the collection, which returns an object. Then you can call any of the core functions on the returned object, depending on whether you want to run it in parallel, in series or race.
+#### Data collections
+
+* [`promiseful.each`](#promisefuleachcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
+* [`promiseful.map`](#promisefulmapcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapofobj-fn)
+
+#### Function collections
+
+* [`promiseful.applyEach`](#promisefulapplyeachfns-args)
+* [`promiseful.times`](#promisefultimesn-fn)
+
+Invoking a collection function is a two step process. First apply promiseful to the collection, which returns an object. Then you can call any of the core functions on the returned object, depending on whether you want to run it in parallel, in series or race.
+
 
 e.g.:
 ```JS
@@ -64,18 +77,13 @@ promiseful.each(array, promisefulFunction)
     // ...
   });
 ```
+_________________________________________________
 
-#### Data collections
+### Loops
 
-* [`promiseful.each`](#promisefuleachcoll-fn)
-* [`promiseful.eachOf`](#promisefuleachofobj-fn)
-* [`promiseful.map`](#promisefulmapcoll-fn)
-* [`promiseful.mapOf`](#promisefulmapofobj-fn)
-
-#### Function collections
-
-* [`promiseful.applyEach`](#promisefulapplyeachfns-args)
-* [`promiseful.times`](#promisefultimesn-fn)
+* [`promiseful.forever`](#promisefulforeverfn)
+* [`promiseful.until`](#promisefuluntiltest-fn)
+* [`promiseful.whilst`](#promisefulwhilsttest-fn)
 
 _________________________________________________
 
@@ -266,44 +274,6 @@ pf.then((result) => {
 
 #### See also:
 * [`promiseful.race`](#promisefulracefns)
-
-_________________________________________________
-
-### `promiseful.waterfall(fns, [initialValue])`
-> Runs the array of functions in series, each passing their results to the next in the array, finally returning a Promise with resolved value of the last function. However, if any of the functions rejects, waterfall rejects with the reason of the function that rejects.
-
-#### Parameters
-* `fns`
-    > An array of **promiseful functions**
-
-* `intialValue` (*optional*)
-    > The value to be passed to the first function
-
-#### Example
-```JS
-const pf = promiseful.waterfall(
-  [
-    (val) => new Promise((resolve, reject) =>
-      setTimeout(() => resolve(val * 2), 50)
-    ),
-    (val) => new Promise((resolve, reject) =>
-      setTimeout(() => resolve(val + 3), 80)
-    ),
-    (val) => new Promise((resolve, reject) =>
-      setTimeout(() => resolve(val * 10), 30)
-    )
-  ],
-  7
-);
-
-pf.then((result) => {
-  // (((7 * 2) + 3) * 10) = 170
-  // Result will be 170
-});
-```
-
-#### See also:
-* [`promiseful.series`](#promisefulseriesfns)
 
 _________________________________________________
 
@@ -525,3 +495,142 @@ const pf = promiseful.times(5, pingFunction)
   console.error("Error pinging: ", err);
 });
 ```
+_________________________________________________
+
+### `promiseful.forever(fn)`
+> The **promiseful function** `fn` is called repeatedly until it rejects.
+
+> Note: This method never resolves.
+
+#### Parameters
+* `fn`
+    > A **promiseful function**.
+
+#### Example
+```JS
+const pf = promiseful.forever(pingInstances)
+.catch((err) => {
+  console.error("Error while pinging:", err);
+});
+```
+
+#### See also:
+* [`promiseful.until`](#promisefuluntiltest-fn)
+* [`promiseful.whilst`](#promisefulwhilsttest-fn)
+
+_________________________________________________
+
+### `promiseful.until(test, fn)`
+> Repeatedly calls the function `fn` one or more times until the synchronous function `test` returns `true` or `fn` rejects.
+
+#### Parameters
+* `test`
+    > A synchronous function that tests the truth value of the resolved value of the last execution of `fn`.
+
+* `fn`
+    > A **promiseful function**.
+
+#### Example
+```JS
+// Get current location
+const getCurrentLocation = () => new Promise((resolve, reject) =>
+  gps.getLocation((err, location) =>
+    (err) ? reject(err) : resolve(location)
+  )
+);
+
+
+// Are we there, yet?
+function checkLocation(location) {
+  return (google.maps.geometry.spherical.computeDistanceBetween(location, myLocation) <= acceptableDistance);
+}
+
+const pf = promiseful.until(checkLocation, getCurrentLocation)
+.then((location) => {
+  // We are at location now.
+})
+.catch((err) => {
+  console.error("Error getting location: ", err);
+});
+```
+#### See also:
+* [`promiseful.forever`](#promisefulforeverfn)
+* [`promiseful.whilst`](#promisefulwhilsttest-fn)
+
+_________________________________________________
+
+### `promiseful.whilst(test, fn)`
+> Repeatedly calls the function `fn` one or more times until the synchronous function `test` returns `false` or `fn` rejects.
+> promiseful equivalent of JS [`do ... while`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/do...while) loop.
+
+#### Parameters
+* `test`
+    > A synchronous function that tests the truth value of the resolved value of the last execution of `fn`.
+
+* `fn`
+    > A **promiseful function**.
+
+#### Example
+```JS
+// Get current location
+const getCurrentLocation = () => new Promise((resolve, reject) =>
+  gps.getLocation((err, location) =>
+    (err) ? reject(err) : resolve(location)
+  )
+);
+
+
+// Am I far away from danger zone
+function checkLocation(location) {
+  return (google.maps.geometry.spherical.computeDistanceBetween(location, blastLocation) >= acceptableDistance);
+}
+
+const pf = promiseful.whilst(checkLocation, getCurrentLocation)
+.then((location) => {
+  // We are at location now.
+})
+.catch((err) => {
+  console.error("Error getting location: ", err);
+});
+```
+#### See also:
+* [`promiseful.forever`](#promisefulforeverfn)
+* [`promiseful.until`](#promisefuluntiltest-fn)
+
+_________________________________________________
+
+### `promiseful.waterfall(fns, [initialValue])`
+> Runs the array of functions in series, each passing their results to the next in the array, finally returning a Promise with resolved value of the last function. However, if any of the functions rejects, waterfall rejects with the reason of the function that rejects.
+
+#### Parameters
+* `fns`
+    > An array of **promiseful functions**
+
+* `intialValue` (*optional*)
+    > The value to be passed to the first function
+
+#### Example
+```JS
+const pf = promiseful.waterfall(
+  [
+    (val) => new Promise((resolve, reject) =>
+      setTimeout(() => resolve(val * 2), 50)
+    ),
+    (val) => new Promise((resolve, reject) =>
+      setTimeout(() => resolve(val + 3), 80)
+    ),
+    (val) => new Promise((resolve, reject) =>
+      setTimeout(() => resolve(val * 10), 30)
+    )
+  ],
+  7
+);
+
+pf.then((result) => {
+  // (((7 * 2) + 3) * 10) = 170
+  // Result will be 170
+});
+```
+
+#### See also:
+* [`promiseful.series`](#promisefulseriesfns)
