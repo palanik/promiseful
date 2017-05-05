@@ -68,14 +68,14 @@ promiseful.each(array, promisefulFunction)
 #### Data collections
 
 * [`promiseful.each`](#promisefuleachcoll-fn)
-* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
 * [`promiseful.map`](#promisefulmapcoll-fn)
-* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapofobj-fn)
 
 #### Function collections
 
-* [`promiseful.applyEach`](#promisefulapplyeachfns)
-* [`promiseful.times`](#promisefultimesfns)
+* [`promiseful.applyEach`](#promisefulapplyeachfns-args)
+* [`promiseful.times`](#promisefultimesn-fn)
 
 _________________________________________________
 
@@ -341,7 +341,7 @@ const pf = promiseful.each(
 ```
 
 #### See also:
-* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
 * [`promiseful.map`](#promisefulmapcoll-fn)
 
 _________________________________________________
@@ -383,7 +383,7 @@ const pf = promiseful.eachOf(
 
 #### See also:
 * [`promiseful.each`](#promisefuleachcoll-fn)
-* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapofobj-fn)
 
 _________________________________________________
 
@@ -424,7 +424,7 @@ const pf = promiseful.map(
 
 #### See also:
 * [`promiseful.each`](#promisefuleachcoll-fn)
-* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapofobj-fn)
 
 _________________________________________________
 
@@ -465,7 +465,7 @@ const pf = promiseful.map(
 
 #### See also:
 * [`promiseful.map`](#promisefulmapcoll-fn)
-* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
 
 _________________________________________________
 
@@ -497,7 +497,7 @@ const pf = promiseful.applyEach(
 ```
 
 #### See also:
-* [`promiseful.eachOf`](#promisefuleachcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
 
 _________________________________________________
 
