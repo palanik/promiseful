@@ -1,6 +1,7 @@
 import core from './core';
 import series from './series';
 import parallelLimit from './parallelLimit';
+import relay from './relay';
 
 const Kernel = {
 
@@ -12,6 +13,7 @@ const Kernel = {
   series,
   parallel: core.all.bind(core),
   parallelLimit,
+  relay,
 };
 
 export default Kernel;

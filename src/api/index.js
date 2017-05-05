@@ -27,8 +27,8 @@ const Promiseful = {
   series,
   parallel: core.all.bind(core),
   parallelLimit,
-  waterfall,
   relay,
+  waterfall,
 
   // aliases
   every: core.all.bind(core),
