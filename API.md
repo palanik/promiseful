@@ -26,14 +26,65 @@ Methods follow pattern, similar to the excellent [caolan/async](https://github.c
 
 ## Methods
 
-* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
-* [`promiseful.all`](#promisefulparallelfns-or-promisefulallfns)
+### Core
+
+* [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns) aka  [`promiseful.all`](#promisefulparallelfns-or-promisefulallfns)
 * [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit)
 * [`promiseful.series`](#promisefulseriesfns)
 * [`promiseful.race`](#promisefulracefns)
+* [`promiseful.relay`](#promisefulrelayfns)
+
+_________________________________________________
+
+### Collections
+A set of functions for manipulating collections.
+
+Invoking collection functions is a two step process. First apply promiseful to the collection, which returns an object. Then you can call any of the core functions on the returned object, depending on whether you want to run it in parallel, in series or race.
+
+e.g.:
+```JS
+const p = promiseful.each(
+  [1,2,3,4,5,6,7,8],
+  (val) => new Promise((resolve, reject) => {
+      setTimeout(() => resolve(val * 4), 50);
+    }
+  )
+);
+
+p.parallel()
+.then((results) => {
+  // The results array will be [4, 8, 12, 16, 20, 24, 28, 32]
+});
+
+// Or simply
+
+promiseful.each(array, promisefulFunction)
+  .parallelLimit(5)
+  .then((res) => {
+    // ...
+  });
+```
+
+#### Data collections
+
+* [`promiseful.each`](#promisefuleachfns)
+* [`promiseful.eachOf`](#promisefuleachoffns)
+* [`promiseful.map`](#promisefulmapfns)
+* [`promiseful.mapOf`](#promisefulmapOffns)
+
+#### Function collections
+
+* [`promiseful.applyEach`](#promisefulapplyeachfns)
+* [`promiseful.times`](#promisefultimesfns)
+
+_________________________________________________
+
+### Other
+
 * [`promiseful.waterfall`](#promisefulwaterfallfns-initialvalue)
 
 _________________________________________________
+
 
 ### `promiseful.parallel(fns)` or `promiseful.all(fns)`
 > Returns a single Promise that resolves when all of the promises in the functions have resolved, or rejects with the reason of the first function that rejects.
@@ -138,8 +189,7 @@ const pf = promiseful.series(
     () => new Promise((resolve, reject) =>
       setTimeout(() => resolve('three'), 30)
     )
-  ],
-  2
+  ]
 );
 
 pf.then((results) => {
@@ -173,8 +223,7 @@ const pf = promiseful.race(
     () => new Promise((resolve, reject) =>
       setTimeout(() => resolve('three'), 30)
     )
-  ],
-  2
+  ]
 );
 
 pf.then((result) => {
@@ -183,8 +232,40 @@ pf.then((result) => {
 ```
 
 #### See also:
+* [`promiseful.relay`](#promisefulrelayfns)
 * [`promiseful.parallel`](#promisefulparallelfns-or-promisefulallfns)
 * [Promise.race](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
+
+_________________________________________________
+
+### `promiseful.relay(fns)`
+
+> Runs the functions in series, but stops after the first function resolves. Returns the result of the first function succeeds or an array of rejected reasons if all the functions reject.
+
+#### Parameters
+* `fns`
+    > An array of **promiseful functions**
+
+#### Example
+```JS
+const pf = promiseful.relay(
+  [
+    findSomethingInAFile,
+    findSomethingElseInAFile,
+    findAnotherOneInAFile
+  ]
+);
+
+pf.then((result) => {
+  // result will be the value of first function succeeds
+})
+.catch((errors) => {
+  // Errors is an array of rejects
+});
+```
+
+#### See also:
+* [`promiseful.race`](#promisefulracefns)
 
 _________________________________________________
 
@@ -223,3 +304,165 @@ pf.then((result) => {
 
 #### See also:
 * [`promiseful.series`](#promisefulseriesfns)
+
+_________________________________________________
+
+### `promiseful.each(coll, fn)`
+> Applies the function `fn` to each item in `coll`. Running mode depends on the associate function.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A **promiseful function** to apply to each item in `coll`.
+
+#### Example
+```JS
+// Delete file asyncronously
+const promiseUnlink = (fname) => new Promise((resolve, reject) =>
+  fs.unlink(fname, (err) =>
+    (err) ? reject(err) : resolve('Ok')
+  )
+);
+
+// Files to be deleted
+const pf = promiseful.each(
+  ['file1.txt', 'file2.txt', 'file3.txt'],
+  promiseUnlink
+)
+.parallel() // Run parallel
+.then(() => {
+  // All files deleted
+})
+.catch((err) => {
+  console.error("Error deleting files", err);
+});
+```
+
+#### See also:
+* [`promiseful.eachOf`](#promisefuleachoffns)
+* [`promiseful.map`](#promisefulmapfns)
+
+_________________________________________________
+
+### `promiseful.eachOf(obj, fn)`
+> Similar to each, but works with objects. Applies the function `fn` to each value in `obj` passing the key as the second argument.
+
+> Running mode depends on the associate function.
+
+#### Parameters
+* `obj`
+    > An object to iterate over.
+
+* `fn`
+    > A **promiseful function** to apply to each value in `obj`.
+
+#### Example
+```JS
+// Delete file asyncronously
+const promiseUnlink = (fname, folder) => new Promise((resolve, reject) =>
+  fs.unlink(folder + '/' + fname, (err) =>
+    (err) ? reject(err) : resolve('Ok')
+  )
+);
+
+// Files to be deleted
+const pf = promiseful.eachOf(
+  { dir1: 'file1.txt', dir2: 'file2.txt', dir3: 'file3.txt'},
+  promiseUnlink
+)
+.series() // Run series
+.then(() => {
+  // All files deleted
+})
+.catch((err) => {
+  console.error("Error deleting files", err);
+});
+```
+
+#### See also:
+* [`promiseful.each`](#promisefuleachfns)
+* [`promiseful.mapOf`](#promisefulmapOffns)
+
+_________________________________________________
+
+### `promiseful.map(coll, fn)`
+> Produces a new collection of values by mapping each value in `coll` through the function `fn`.
+
+> Running mode depends on the associate function.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A **promiseful function** to map each item in `coll`.
+
+#### Example
+```JS
+// fetch file stat asyncronously
+const promiseStat = (fname) => new Promise((resolve, reject) =>
+  fs.stat(fname, (err, stats) =>
+    (err) ? reject(err) : resolve(stats)
+  )
+);
+
+// Files to be processed
+const pf = promiseful.map(
+  ['file1.txt', 'file2.txt', 'file3.txt'],
+  promiseStat
+)
+.parallel() // Run parallel
+.then((stats) => {
+  // Array of stats
+})
+.catch((err) => {
+  console.error("Error getting stats", err);
+});
+```
+
+#### See also:
+* [`promiseful.each`](#promisefuleachfns)
+* [`promiseful.mapOf`](#promisefulmapOffns)
+
+_________________________________________________
+
+### `promiseful.mapOf(obj, fn)`
+> Produces a new Object by mapping each value in `obj` through the function `fn`.
+
+> Running mode depends on the associate function.
+
+#### Parameters
+* `obj`
+    > An object to iterate over.
+
+* `fn`
+    > A **promiseful function** to map each value in `obj`.
+
+#### Example
+```JS
+// fetch stat asyncronously
+const promiseStat = (fname, folder) => new Promise((resolve, reject) =>
+  fs.stat(folder + '/' + fname, (err, stats) =>
+    (err) ? reject(err) : resolve(stats)
+  )
+);
+
+// Files to be processed
+const pf = promiseful.map(
+  ['file1.txt', 'file2.txt', 'file3.txt'],
+  promiseStat
+)
+.series() // Run series
+.then((stats) => {
+  // Object with stats
+})
+.catch((err) => {
+  console.error("Error getting stats", err);
+});
+```
+
+#### See also:
+* [`promiseful.map`](#promisefulmapfns)
+* [`promiseful.eachOf`](#promisefuleachoffns)
