@@ -145,4 +145,32 @@ describe('each', () => {
 
   });
 
+  describe('relay', () => {
+
+    describe('resolve', () => {
+
+      it('Sum among equals', (done) => {
+        let sum = 0;
+        const ret = promiseful.each(
+          [1,2,3,4,5,6,7,8],
+          (val) => new Promise((resolve, reject) => {
+              setTimeout(() => { sum += val; resolve(val * 4) }, (10 - val) * 50);
+            }
+          )
+        ).relay();
+
+        assert(ret !== null, 'Return is NOT null');
+        expect(ret).to.be.a('Promise');
+        ret.then((res) => {
+          expect(res).to.eql(undefined);
+          expect(sum).to.eql(1);
+          done();
+        })
+        .catch(done);
+      });
+
+    });
+
+  });
+
 });
