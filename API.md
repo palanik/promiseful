@@ -67,10 +67,10 @@ promiseful.each(array, promisefulFunction)
 
 #### Data collections
 
-* [`promiseful.each`](#promisefuleachfns)
-* [`promiseful.eachOf`](#promisefuleachoffns)
-* [`promiseful.map`](#promisefulmapfns)
-* [`promiseful.mapOf`](#promisefulmapOffns)
+* [`promiseful.each`](#promisefuleachcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+* [`promiseful.map`](#promisefulmapcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
 
 #### Function collections
 
@@ -341,8 +341,8 @@ const pf = promiseful.each(
 ```
 
 #### See also:
-* [`promiseful.eachOf`](#promisefuleachoffns)
-* [`promiseful.map`](#promisefulmapfns)
+* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+* [`promiseful.map`](#promisefulmapcoll-fn)
 
 _________________________________________________
 
@@ -382,8 +382,8 @@ const pf = promiseful.eachOf(
 ```
 
 #### See also:
-* [`promiseful.each`](#promisefuleachfns)
-* [`promiseful.mapOf`](#promisefulmapOffns)
+* [`promiseful.each`](#promisefuleachcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
 
 _________________________________________________
 
@@ -423,8 +423,8 @@ const pf = promiseful.map(
 ```
 
 #### See also:
-* [`promiseful.each`](#promisefuleachfns)
-* [`promiseful.mapOf`](#promisefulmapOffns)
+* [`promiseful.each`](#promisefuleachcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapOfcoll-fn)
 
 _________________________________________________
 
@@ -464,5 +464,64 @@ const pf = promiseful.map(
 ```
 
 #### See also:
-* [`promiseful.map`](#promisefulmapfns)
-* [`promiseful.eachOf`](#promisefuleachoffns)
+* [`promiseful.map`](#promisefulmapcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofcoll-fn)
+
+_________________________________________________
+
+### `promiseful.applyEach(fns, ...args)`
+> Applies the `args` to each function in the array.
+> The functions are invoked in the manner as defined by the associated function.
+
+#### Parameters
+* `fns`
+    > A collection of **promiseful functions**.
+
+* `args`
+    > zero or more arguments to pass to the **promiseful functions**.
+
+#### Example
+```JS
+
+const pf = promiseful.applyEach(
+  [searchSiteA, searchSiteB, SearchSiteC],
+  'Robert Frost'
+)
+.parallel() // Run parallel
+.then((results) => {
+  // Array of search results
+})
+.catch((err) => {
+  console.error("Error searching sites:", err);
+});
+```
+
+#### See also:
+* [`promiseful.eachOf`](#promisefuleachcoll-fn)
+
+_________________________________________________
+
+### `promiseful.times(n, fn)`
+> Involes the function `fn`, `n` times.
+> The function is invoked in the manner as defined by the associated function.
+
+#### Parameters
+* `n`
+    > Count of times to run the function.
+
+* `fn`
+    > A **promiseful function**.
+
+#### Example
+```JS
+
+// Ping 5 times
+const pf = promiseful.times(5, pingFunction)
+.race() // Race
+.then((result) => {
+  // ping result
+})
+.catch((err) => {
+  console.error("Error pinging: ", err);
+});
+```
