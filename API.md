@@ -39,20 +39,7 @@ _________________________________________________
 ### Collections
 A set of functions for manipulating collections.
 
-#### Data collections
-
-* [`promiseful.each`](#promisefuleachcoll-fn)
-* [`promiseful.eachOf`](#promisefuleachofobj-fn)
-* [`promiseful.map`](#promisefulmapcoll-fn)
-* [`promiseful.mapOf`](#promisefulmapofobj-fn)
-
-#### Function collections
-
-* [`promiseful.applyEach`](#promisefulapplyeachfns-args)
-* [`promiseful.times`](#promisefultimesn-fn)
-
 Invoking a collection function is a two step process. First apply promiseful to the collection, which returns an object. Then you can call any of the core functions on the returned object, depending on whether you want to run it in parallel, in series or race.
-
 
 e.g.:
 ```JS
@@ -77,6 +64,19 @@ promiseful.each(array, promisefulFunction)
     // ...
   });
 ```
+
+#### Data collections
+
+* [`promiseful.each`](#promisefuleachcoll-fn)
+* [`promiseful.eachOf`](#promisefuleachofobj-fn)
+* [`promiseful.map`](#promisefulmapcoll-fn)
+* [`promiseful.mapOf`](#promisefulmapofobj-fn)
+
+#### Function collections
+
+* [`promiseful.applyEach`](#promisefulapplyeachfns-args)
+* [`promiseful.times`](#promisefultimesn-fn)
+
 _________________________________________________
 
 ### Loops
