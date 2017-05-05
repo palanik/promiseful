@@ -137,4 +137,45 @@ describe('map', () => {
 
   });
 
+  describe('relay', () => {
+
+    it('resolve', (done) => {
+      const ret = promiseful.map(
+        [1,2,4,8,16,32,64,128],
+        (val) => new Promise((resolve, reject) => {
+            setTimeout(() => ( (val === 16) ? resolve(val >> 2) : reject(val << 2) ), (10 - val) * 50);
+          }
+        )
+      ).relay();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(4);
+        done();
+      })
+      .catch(done);
+    });
+
+
+    it('reject', (done) => {
+      const ret = promiseful.map(
+        [2,4,8,16,32,64,128,256],
+        (val) => new Promise((resolve, reject) => {
+            setTimeout(() => reject(val >> 1), (10 - val) * 50);
+          }
+        )
+      ).relay();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then(done)
+      .catch((res) => {
+        expect(res).to.eql([1,2,4,8,16,32,64,128]);
+        done();
+      });
+    });
+
+  });
+
 });

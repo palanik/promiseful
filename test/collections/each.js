@@ -152,9 +152,9 @@ describe('each', () => {
       it('Sum among equals', (done) => {
         let sum = 0;
         const ret = promiseful.each(
-          [1,2,3,4,5,6,7,8],
+          [1,2,4,8,16,32,64,128],
           (val) => new Promise((resolve, reject) => {
-              setTimeout(() => { sum += val; resolve(val * 4) }, (10 - val) * 50);
+              setTimeout(() => { sum += val; resolve(val << 2) }, (10 - val) * 50);
             }
           )
         ).relay();
