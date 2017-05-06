@@ -59,7 +59,7 @@ describe('parallel', () => {
     });
 
     it('function, promise, value', (done) => {
-      const ret = promiseful.every(
+      const ret = promiseful.parallel(
         [
           () => new Promise((resolve, reject) =>
             setTimeout(() => resolve('one'), 50)
