@@ -16,6 +16,8 @@ import map from './collections/map';
 import mapOf from './collections/mapOf';
 import filter from './collections/filter';
 import groupBy from './collections/groupBy';
+import every from './collections/every';
+import some from './collections/some';
 
 const Promiseful = {
 
@@ -33,7 +35,6 @@ const Promiseful = {
   waterfall,
 
   // aliases
-  every: core.all.bind(core),
   inject: core.reduce.bind(core),
   fold: core.reduce.bind(core),
   tryEach: relay,
@@ -45,6 +46,8 @@ const Promiseful = {
   mapOf,
   filter,
   groupBy,
+  every,
+  some,
 
   // Functions
   applyEach,
