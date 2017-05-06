@@ -71,6 +71,8 @@ promiseful.each(array, promisefulFunction)
 * [`promiseful.eachOf`](#promisefuleachofobj-fn)
 * [`promiseful.map`](#promisefulmapcoll-fn)
 * [`promiseful.mapOf`](#promisefulmapofobj-fn)
+* [`promiseful.filter`](#promisefulfiltercoll-fn)
+* [`promiseful.groupBy`](#promisefulgroupbycoll-fn)
 
 #### Function collections
 
@@ -436,6 +438,88 @@ const pf = promiseful.map(
 #### See also:
 * [`promiseful.map`](#promisefulmapcoll-fn)
 * [`promiseful.eachOf`](#promisefuleachofobj-fn)
+
+_________________________________________________
+
+### `promiseful.filter(coll, fn)`
+> Returns a new collection of values in `coll` which pass an promiseful truth test.
+
+> Note: This method can be invoked only as `parallel`, `parallelLimit` or `series` only.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A truth test to apply to each item in `coll`. The **promiseful function** should resolve a boolean value.
+
+#### Example
+```JS
+const ret = promiseful.filter(
+  [1,2,3,4,5,6,7,8,9,10],
+  (val) => new Promise((resolve, reject) => {
+      setTimeout(() => resolve((val & 1) === 0), 50);
+    }
+  )
+)
+.parallel()
+.then((evens) => {
+  // evens is an array of even numbers - [2,4,6,8,10]
+})
+.catch((err) => {
+  console.error("Error while filtering:", err);
+});
+```
+
+#### See also:
+* [`promiseful.groupBy`](#promisefulgroupbycoll-fn)
+
+_________________________________________________
+
+### `promiseful.groupBy(coll, fn)`
+> Returns a new object of keys from the resolved value of `fn` with values corresponds to an array of items, from `coll`.
+
+> Note: This method can be invoked only as `parallel`, `parallelLimit` or `series` only.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A **promiseful function** to apply to each item in `coll`. The **promiseful function** should resolve the key for the final object.
+
+#### Example
+```JS
+const alpha = /^[a-z]$/i;
+const num = /^[0-9]$/i;
+
+const ret = promiseful.groupBy(
+  ['P','2','0','m',':','$','3','f','u','1','🤞'],
+  (val) => new Promise((resolve, reject) => {
+      const grp = alpha.test(val) ? 'alpha' : ( num.test(val) ? 'num' : 'other');
+      setTimeout(() => resolve((grp), 50);
+    }
+  )
+)
+.parallel()
+.then((result) => {
+  /*
+   result should be:
+    {
+      alpha: ['P','m',f','u'],
+      num: ['2','0','3','1'],
+      other: [':','$','🤞']
+    }
+    */
+})
+.catch((err) => {
+  console.error("Error while grouping:", err);
+});
+```
+
+#### See also:
+* [`promiseful.filter`](#promisefulfiltercoll-fn)
+
 
 _________________________________________________
 
