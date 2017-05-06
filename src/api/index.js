@@ -14,6 +14,8 @@ import each from './collections/each';
 import eachOf from './collections/eachOf';
 import map from './collections/map';
 import mapOf from './collections/mapOf';
+import filter from './collections/filter';
+import groupBy from './collections/groupBy';
 
 const Promiseful = {
 
@@ -41,6 +43,8 @@ const Promiseful = {
   eachOf,
   map,
   mapOf,
+  filter,
+  groupBy,
 
   // Functions
   applyEach,

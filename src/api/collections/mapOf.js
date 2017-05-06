@@ -1,6 +1,6 @@
 import collector from '../functions/collector';
 
-export default function map(data, fn) {
+export default function mapOf(data, fn) {
   const keys = Object.keys(data);
   const funcs = keys.map(d => fn.bind(null, data[d], d));
 
