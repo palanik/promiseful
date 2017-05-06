@@ -110,6 +110,32 @@ describe('parallelLimit', () => {
       .catch(done);
     });
 
+    it('default', (done) => {
+      const results = [];
+      const funcs = [];
+      for (let i = 0; i < 20; i++) {
+        const res = Math.random().toString(36).substring(2, 9);
+        results.push(res);
+        funcs.push(
+          () => new Promise(
+            (resolve, reject) => setTimeout(
+              () => resolve(res),
+              Math.round(1 + Math.random() * 50)
+            )
+          )
+        );
+      }
+
+      const ret = promiseful.parallelLimit(funcs);
+
+      assert(ret !== null, 'Return is NOT null');
+      ret.then((res) => {
+        expect(res).to.eql(results);
+        done();
+      })
+      .catch(done);
+    });
+
   });
 
   describe('reject', () => {

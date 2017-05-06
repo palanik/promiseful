@@ -2,9 +2,9 @@ import utils from '../utils/index';
 import core from './core';
 import series from './series';
 
-export default function parallelLimit(fns, limit) {
+export default function parallelLimit(fns, limit = 0) {
   const funcs = utils.collection.arrayize(fns);
-  if (limit >= funcs.length) {
+  if (limit <= 0 || limit >= funcs.length) {
     return core.all(funcs);
   }
 
