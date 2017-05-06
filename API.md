@@ -299,7 +299,7 @@ const promiseUnlink = (fname) => new Promise((resolve, reject) =>
 );
 
 // Files to be deleted
-const pf = promiseful.each(
+promiseful.each(
   ['file1.txt', 'file2.txt', 'file3.txt'],
   promiseUnlink
 )
@@ -340,7 +340,7 @@ const promiseUnlink = (fname, folder) => new Promise((resolve, reject) =>
 );
 
 // Files to be deleted
-const pf = promiseful.eachOf(
+promiseful.eachOf(
   { dir1: 'file1.txt', dir2: 'file2.txt', dir3: 'file3.txt'},
   promiseUnlink
 )
@@ -381,7 +381,7 @@ const promiseStat = (fname) => new Promise((resolve, reject) =>
 );
 
 // Files to be processed
-const pf = promiseful.map(
+promiseful.map(
   ['file1.txt', 'file2.txt', 'file3.txt'],
   promiseStat
 )
@@ -422,7 +422,7 @@ const promiseStat = (fname, folder) => new Promise((resolve, reject) =>
 );
 
 // Files to be processed
-const pf = promiseful.map(
+promiseful.map(
   ['file1.txt', 'file2.txt', 'file3.txt'],
   promiseStat
 )
@@ -455,7 +455,7 @@ _________________________________________________
 
 #### Example
 ```JS
-const ret = promiseful.filter(
+promiseful.filter(
   [1,2,3,4,5,6,7,8,9,10],
   (val) => new Promise((resolve, reject) => {
       setTimeout(() => resolve((val & 1) === 0), 50);
@@ -493,7 +493,7 @@ _________________________________________________
 const alpha = /^[a-z]$/i;
 const num = /^[0-9]$/i;
 
-const ret = promiseful.groupBy(
+promiseful.groupBy(
   ['P','2','0','m',':','$','3','f','u','1','🤞'],
   (val) => new Promise((resolve, reject) => {
       const grp = alpha.test(val) ? 'alpha' : ( num.test(val) ? 'num' : 'other');
@@ -537,7 +537,7 @@ _________________________________________________
 #### Example
 ```JS
 
-const pf = promiseful.applyEach(
+promiseful.applyEach(
   [searchSiteA, searchSiteB, SearchSiteC],
   'Robert Frost'
 )
@@ -570,7 +570,7 @@ _________________________________________________
 ```JS
 
 // Ping 5 times
-const pf = promiseful.times(5, pingFunction)
+promiseful.times(5, pingFunction)
 .race() // Race
 .then((result) => {
   // ping result
@@ -592,7 +592,7 @@ _________________________________________________
 
 #### Example
 ```JS
-const pf = promiseful.forever(pingInstances)
+promiseful.forever(pingInstances)
 .catch((err) => {
   console.error("Error while pinging:", err);
 });
@@ -629,7 +629,7 @@ function checkLocation(location) {
   return (google.maps.geometry.spherical.computeDistanceBetween(location, myLocation) <= acceptableDistance);
 }
 
-const pf = promiseful.until(checkLocation, getCurrentLocation)
+promiseful.until(checkLocation, getCurrentLocation)
 .then((location) => {
   // We are at location now.
 })
@@ -669,7 +669,7 @@ function checkLocation(location) {
   return (google.maps.geometry.spherical.computeDistanceBetween(location, blastLocation) >= acceptableDistance);
 }
 
-const pf = promiseful.whilst(checkLocation, getCurrentLocation)
+promiseful.whilst(checkLocation, getCurrentLocation)
 .then((location) => {
   // We are at location now.
 })
@@ -695,7 +695,7 @@ _________________________________________________
 
 #### Example
 ```JS
-const pf = promiseful.waterfall(
+promiseful.waterfall(
   [
     (val) => new Promise((resolve, reject) =>
       setTimeout(() => resolve(val * 2), 50)
