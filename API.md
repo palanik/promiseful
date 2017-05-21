@@ -1,11 +1,9 @@
-promiseful
-==========
-
-# API
+promiseful API
+==============
 
 A **promiseful function** is a function that returns a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-e.g.:
+e.g. :
 ```JS
 function readPasswds() {
   return new Promise((resolve, reject) => {
@@ -41,7 +39,7 @@ A set of functions for manipulating collections.
 
 Invoking a collection function is a two step process. First apply promiseful to the collection, which returns an object. Then you can call any of the core functions on the returned object, depending on whether you want to run it in parallel, in series or race.
 
-e.g.:
+e.g. :
 ```JS
 const p = promiseful.each(
   [1,2,3,4,5,6,7,8],
@@ -424,8 +422,8 @@ const promiseStat = (fname, folder) => new Promise((resolve, reject) =>
 );
 
 // Files to be processed
-promiseful.map(
-  ['file1.txt', 'file2.txt', 'file3.txt'],
+promiseful.mapOf(
+  {a:'file1.txt', b:'file2.txt', c:'file3.txt'},
   promiseStat
 )
 .series() // Run series
@@ -548,7 +546,7 @@ promiseful.every(
 )
 .parallel()
 .then((allEven) => {
-  // allEven is false
+  // allEven is true
 })
 .catch((err) => {
   console.error("Error with every:", err);
