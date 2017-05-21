@@ -44,7 +44,7 @@ describe('some', () => {
         .catch(done);
       });
 
-      it('some', (done) => {
+      it('parallel', (done) => {
         const ret = promiseful.some(
           [1,2,3,4,5,6,7,8,9,10],
           (val) => new Promise((resolve, reject) => {
@@ -61,6 +61,7 @@ describe('some', () => {
         })
         .catch(done);
       });
+
 
     });
 
@@ -147,4 +148,129 @@ describe('some', () => {
 
   });
 
+  describe('race', () => {
+    it('All', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() => resolve(true), val * 20)
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(true);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('50/50', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() =>  {
+                resolve((val & 1) === 0)
+              },
+              val * 20
+            )
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(true);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('1', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() =>  {
+                resolve(val === 7)
+              },
+              val * 20
+            )
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(true);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('none', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() =>  {
+                resolve(false)
+              },
+              val * 20
+            )
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(false);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('reject first', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() =>  {
+                (val !== 1) ? resolve(true) : reject(val)
+              },
+              val * 20
+            )
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret
+      .then(done)
+      .catch((err) => {
+        expect(err).to.eql(1);
+        done();
+      });
+    });
+
+    it('reject later', (done) => {
+      const ret = promiseful.some(
+        [1,2,3,4,5,6,7,8,9,10],
+        (val) => new Promise((resolve, reject) =>
+            setTimeout(() =>  {
+                (val !== 7) ? resolve(true) : reject(val)
+              },
+              val * 20
+            )
+        )
+      ).race();
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql(true);
+        done();
+      })
+      .catch(done);
+    });
+
+  });
 });
