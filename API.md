@@ -73,6 +73,8 @@ promiseful.each(array, promisefulFunction)
 * [`promiseful.mapOf`](#promisefulmapofobj-fn)
 * [`promiseful.filter`](#promisefulfiltercoll-fn)
 * [`promiseful.groupBy`](#promisefulgroupbycoll-fn)
+* [`promiseful.every`](#promisefuleverycoll-fn)
+* [`promiseful.some`](#promisefulsomecoll-fn)
 
 #### Function collections
 
@@ -444,7 +446,7 @@ _________________________________________________
 ### `promiseful.filter(coll, fn)`
 > Returns a new collection of values in `coll` which pass an promiseful truth test.
 
-> Note: This method can be invoked only as `parallel`, `parallelLimit` or `series` only.
+> Note: This method can be invoked as `parallel`, `parallelLimit` or `series` only.
 
 #### Parameters
 * `coll`
@@ -479,7 +481,7 @@ _________________________________________________
 ### `promiseful.groupBy(coll, fn)`
 > Returns a new object of keys from the resolved value of `fn` with values corresponds to an array of items, from `coll`.
 
-> Note: This method can be invoked only as `parallel`, `parallelLimit` or `series` only.
+> Note: This method can be invoked as `parallel`, `parallelLimit` or `series` only.
 
 #### Parameters
 * `coll`
@@ -520,6 +522,75 @@ promiseful.groupBy(
 #### See also:
 * [`promiseful.filter`](#promisefulfiltercoll-fn)
 
+_________________________________________________
+
+### `promiseful.every(coll, fn)`
+> Returns true if every item in the `coll` satisfies the truth test.
+
+> Note: This method can be invoked as `parallel`, `parallelLimit` or `series` only.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A truth test to apply to each item in `coll`. The **promiseful function** should resolve a boolean value.
+
+#### Example
+```JS
+// All even numbers?
+promiseful.every(
+  [2,4,6,8,10,12,14,16],
+  (val) => new Promise((resolve, reject) => {
+      setTimeout(() => resolve((val & 1) === 0), 50);
+    }
+  )
+)
+.parallel()
+.then((allEven) => {
+  // allEven is false
+})
+.catch((err) => {
+  console.error("Error with every:", err);
+});
+```
+
+#### See also:
+* [`promiseful.some`](#promisefulsomecoll-fn)
+
+_________________________________________________
+
+### `promiseful.some(coll, fn)`
+> Returns true if at least one item in the `coll` satisfies the truth test.
+
+#### Parameters
+* `coll`
+    > A collection to iterate over.
+
+* `fn`
+    > A truth test to apply to the items in `coll`. The **promiseful function** should resolve a boolean value.
+
+#### Example
+```JS
+// Some even numbers?
+promiseful.some(
+  [1,2,3,4,5,6,7,8],
+  (val) => new Promise((resolve, reject) => {
+      setTimeout(() => resolve((val & 1) === 0), 50);
+    }
+  )
+)
+.race()
+.then((someEven) => {
+  // someEven is true
+})
+.catch((err) => {
+  console.error("Error with some:", err);
+});
+```
+
+#### See also:
+* [`promiseful.every`](#promisefuleverycoll-fn)
 
 _________________________________________________
 
