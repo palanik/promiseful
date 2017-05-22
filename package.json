@@ -6,6 +6,9 @@
   "babel": {
     "presets": [
       "es2015"
+    ],
+    "ignore": [
+      "**/mine/*"
     ]
   },
   "eslintConfig": {

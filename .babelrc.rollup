@@ -7,6 +7,9 @@
       }
     ]
   ],
+  "ignore": [
+    "**/mine/*"
+  ],
   "plugins": [
     "external-helpers"
   ]
