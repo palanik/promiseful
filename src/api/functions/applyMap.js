@@ -6,5 +6,5 @@ export default function applyMap(fns, ...args) {
     .map(f => f.bind(null, ...args));
 
   const coll = new collector.Functions(funcs);
-  return coll.attachKernel(() => undefined);
+  return coll.attachKernel();
 }
