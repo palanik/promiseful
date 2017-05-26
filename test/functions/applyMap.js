@@ -2,38 +2,25 @@ import { expect } from 'chai';
 import assert from 'assert';
 import promiseful from '../../src/';
 
-describe('applyEach', () => {
+describe('applyMap', () => {
 
   describe('parallel', () => {
 
     describe('resolve', () => {
 
-      it('Small Multiples', (done) => {
-        let results = 0;
-        const ret = promiseful.applyEach(
+      it('Multiplication Table', (done) => {
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 1;
-                  results += res;
-                  resolve(res);
-                }, 50);
+                setTimeout(() => resolve(val * 1), 50);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 2;
-                  results += res;
-                  resolve(res);
-                }, 80);
+                setTimeout(() => resolve(val * 2), 80);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 3;
-                  results += res;
-                  resolve(res);
-                }, 30);
+                setTimeout(() => resolve(val * 3), 30);
               }
             )
           ],
@@ -43,22 +30,17 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql(42);
+          expect(res).to.eql([7, 14, 21]);
           done();
         })
         .catch(done);
       });
 
       it('one', (done) => {
-        let results = null;
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results = `Hello ${val}`;
-                  resolve(results)
-                }, 50);
+                setTimeout(() => resolve(`Hello ${val}`), 50);
               }
             )
           ],
@@ -68,47 +50,36 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql('Hello World');
+          expect(res).to.eql(['Hello World']);
           done();
         })
         .catch(done);
       });
 
       it('zero', (done) => {
-        const ret = promiseful.applyEach([], 'Universe').parallel();
+        const ret = promiseful.applyMap([], 'Universe').parallel();
 
         assert(ret !== null, 'Return is NOT null');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
+          expect(res).to.eql([]);
           done();
         })
         .catch(done);
       });
 
       it('Multiple params', (done) => {
-        let results = 0;
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val1, val2, val3) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results += (val1 + val2 + val3) * 1;
-                  resolve(results);
-                }, 50);
+                setTimeout(() => resolve((val1 + val2 + val3) * 1), 50);
               }
             ),
             (val1, val2, val3) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results += (val1 + val2 + val3) * 2;
-                  resolve(results);
-                }, 50);
+                setTimeout(() => resolve((val1 + val2 + val3) * 2), 80);
               }
             ),
             (val1, val2, val3) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results += (val1 + val2 + val3) * 3;
-                  resolve(results);
-                }, 50);
+                setTimeout(() => resolve((val1 + val2 + val3) * 3), 30);
               }
             )
           ],
@@ -118,8 +89,7 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql(60);
+          expect(res).to.eql([10, 20, 30]);
           done();
         })
         .catch(done);
@@ -129,7 +99,7 @@ describe('applyEach', () => {
 
     describe('reject', () => {
       it('first of three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 50)
@@ -155,7 +125,7 @@ describe('applyEach', () => {
       });
 
       it('all three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 150)
@@ -188,80 +158,43 @@ describe('applyEach', () => {
 
     describe('resolve', () => {
 
-      it('Large Mulitples', (done) => {
-        let results = 0;
-        const ret = promiseful.applyEach(
+      it('Multiplication Table', (done) => {
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 1;
-                  results += res;
-                  resolve(res)
-                }, 50);
+                setTimeout(() => resolve(val * 1), 50);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 2;
-                  results += res;
-                  resolve(res)
-                }, 80);
+                setTimeout(() => resolve(val * 2), 80);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 3;
-                  results += res;
-                  resolve(res)
-                }, 30);
+                setTimeout(() => resolve(val * 3), 30);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 4;
-                  results += res;
-                  resolve(res)
-                }, 70);
+                setTimeout(() => resolve(val * 4), 70);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const res = val * 5;
-                    results += res;
-                    resolve(res)
-                  }, 20);
+                setTimeout(() => resolve(val * 5), 20);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const res = val * 6;
-                    results += res;
-                    resolve(res)
-                  }, 55);
+                setTimeout(() => resolve(val * 6), 55);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 7;
-                  results += res;
-                  resolve(res)
-                }, 75);
+                setTimeout(() => resolve(val * 7), 75);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 8;
-                  results += res;
-                  resolve(res)
-                }, 65);
+                setTimeout(() => resolve(val * 8), 65);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 9;
-                  results += res;
-                  resolve(res)
-                }, 15);
+                setTimeout(() => resolve(val * 9), 15);
               }
             )
           ],
@@ -271,8 +204,7 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql(90);
+          expect(res).to.eql([2, 4, 6, 8, 10, 12, 14, 16, 18]);
           done();
         })
         .catch(done);
@@ -282,7 +214,7 @@ describe('applyEach', () => {
 
     describe('reject', () => {
       it('third of three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => resolve(val * 1), 50)
@@ -308,7 +240,7 @@ describe('applyEach', () => {
       });
 
       it('all three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 250)
@@ -342,34 +274,21 @@ describe('applyEach', () => {
 
     describe('resolve', () => {
 
-      it('Triple Multiple', (done) => {
-        let results = 0;
-        const ret = promiseful.applyEach(
+      it('Multiplication Table', (done) => {
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 1;
-                  results += res;
-                  resolve(res)
-                }, 50);
+                setTimeout(() => resolve(val * 1), 50);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 2;
-                  results += res;
-                  resolve(res)
-                }, 80);
+                setTimeout(() => resolve(val * 2), 80);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 3;
-                  results += res;
-                  resolve(res)
-                }, 30);
+                setTimeout(() => resolve(val * 3), 30);
               }
-            ),
+            )
           ],
           7
         ).series();
@@ -377,22 +296,17 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql(42);
+          expect(res).to.eql([7, 14, 21]);
           done();
         })
         .catch(done);
       });
 
       it('one', (done) => {
-        let results = null;
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results = `Hello ${val}`;
-                  resolve(results);
-                }, 50);
+                setTimeout(() => resolve(`Hello ${val}`), 50);
               }
             )
           ],
@@ -402,19 +316,18 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql('Hello World');
+          expect(res).to.eql(['Hello World']);
           done();
         })
         .catch(done);
       });
 
       it('zero', (done) => {
-        const ret = promiseful.applyEach([], 'Universe').series();
+        const ret = promiseful.applyMap([], 'Universe').series();
 
         assert(ret !== null, 'Return is NOT null');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
+          expect(res).to.eql([]);
           done();
         })
         .catch(done);
@@ -424,7 +337,7 @@ describe('applyEach', () => {
 
     describe('reject', () => {
       it('first of three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 50)
@@ -450,7 +363,7 @@ describe('applyEach', () => {
       });
 
       it('all three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 150)
@@ -483,32 +396,19 @@ describe('applyEach', () => {
 
     describe('resolve', () => {
 
-      it('What Multiple?', (done) => {
-        let results = 0;
-        const ret = promiseful.applyEach(
+      it('Multiplication Table', (done) => {
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 1;
-                  results += res;
-                  resolve(res)
-                }, 50);
+                setTimeout(() => resolve(val * 1), 50);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 2;
-                  results += res;
-                  resolve(res)
-                }, 80);
+                setTimeout(() => resolve(val * 2), 80);
               }
             ),
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const res = val * 3;
-                  results += res;
-                  resolve(res)
-                }, 30);
+                setTimeout(() => resolve(val * 3), 30);
               }
             )
           ],
@@ -518,22 +418,17 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql(21);
+          expect(res).to.eql(21);
           done();
         })
         .catch(done);
       });
 
       it('one', (done) => {
-        let results = null;
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  results = `Hello ${val}`;
-                  resolve(results)
-                }, 50);
+                setTimeout(() => resolve(`Hello ${val}`), 50);
               }
             )
           ],
@@ -543,19 +438,18 @@ describe('applyEach', () => {
         assert(ret !== null, 'Return is NOT null');
         expect(ret).to.be.a('Promise');
         ret.then((res) => {
-          expect(res).to.eql(undefined);
-          expect(results).to.eql('Hello World');
+          expect(res).to.eql('Hello World');
           done();
         })
         .catch(done);
       });
 
       it('zero', (done) => {
-        const ret = promiseful.applyEach([], 'Universe').race();
+        const ret = promiseful.applyMap([], 'Universe').race();
 
         assert(ret !== null, 'Return is NOT null');
         ret.then((res) => {
-          expect(res).to.be.undefined;
+          expect(res).to.be.null;
           done();
         })
         .catch(done);
@@ -565,7 +459,7 @@ describe('applyEach', () => {
 
     describe('reject', () => {
       it('first of three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 50)
@@ -584,14 +478,14 @@ describe('applyEach', () => {
         expect(ret).to.be.a('promise');
         ret
         .then((res) => {
-          expect(res).to.eql(undefined);
+          expect(res).to.eql(15);
           done();
         })
         .catch(done);
       });
 
       it('all three', (done) => {
-        const ret = promiseful.applyEach(
+        const ret = promiseful.applyMap(
           [
             (val) => new Promise((resolve, reject) =>
               setTimeout(() => reject(val * 1), 150)
