@@ -25,7 +25,7 @@
     "test-mocha": "babel-node ./node_modules/.bin/_mocha --recursive",
     "browser-test": "karma start",
     "browserify": "npm run build && mkdir -p dist && browserify -o dist/promiseful.js -d src/ -t -t babelify --presets es2015 --sourceMapsAbsolute",
-    "rollup": "mv .babelrc.rollup .babelrc && rollup -c && rollup -c --environment minify:true && mv .babelrc .babelrc.rollup"
+    "rollup": "mv .babelrc.rollup .babelrc && rollup -c && rollup -c --environment minify:true && rollup -c --environment version:latest && rollup -c --environment version:latest,minify:true && mv .babelrc .babelrc.rollup"
   },
   "keywords": [
     "promise",
