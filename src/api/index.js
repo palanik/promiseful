@@ -8,6 +8,9 @@ import whilst from './whilst';
 import relay from './relay';
 
 import applyEach from './functions/applyEach';
+import applyEachOf from './functions/applyEachOf';
+import applyMap from './functions/applyMap';
+import applyMapOf from './functions/applyMapOf';
 import times from './functions/times';
 
 import each from './collections/each';
@@ -49,9 +52,17 @@ const Promiseful = {
   every,
   some,
 
+  // Collection - aliases
+  mapValues: mapOf,
+
   // Functions
   applyEach,
+  applyEachOf,
+  applyMap,
+  applyMapOf,
   times,
+
+  // Loops
   forever,
   until,
   whilst,
