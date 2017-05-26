@@ -77,6 +77,9 @@ promiseful.each(array, promisefulFunction)
 #### Function collections
 
 * [`promiseful.applyEach`](#promisefulapplyeachfns-args)
+* [`promiseful.applyEachOf`](#promisefulapplyeachofobj-args)
+* [`promiseful.applyMap`](#promisefulapplymapfns-args)
+* [`promiseful.applyMapOf`](#promisefulapplymapofobj-args)
 * [`promiseful.times`](#promisefultimesn-fn)
 
 _________________________________________________
@@ -607,6 +610,38 @@ _________________________________________________
 ```JS
 
 promiseful.applyEach(
+  [addContent, renameFile, updateSchema],
+  'plume'
+)
+.series() // Run series
+.then(() => {
+  // Finished operation
+})
+.catch((err) => {
+  console.error("Error running series:", err);
+});
+```
+
+#### See also:
+* [`promiseful.each`](#promisefuleachcoll-fn)
+
+_________________________________________________
+
+### `promiseful.applyMap(fns, ...args)`
+> Produces a new collection of values by applying the `args` to each function in the array.
+> The functions are invoked in the manner as defined by the associated function.
+
+#### Parameters
+* `fns`
+    > A collection of **promiseful functions**.
+
+* `args`
+    > zero or more arguments to pass to the **promiseful functions**.
+
+#### Example
+```JS
+
+promiseful.applyMap(
   [searchSiteA, searchSiteB, SearchSiteC],
   'Robert Frost'
 )
@@ -620,7 +655,90 @@ promiseful.applyEach(
 ```
 
 #### See also:
+* [`promiseful.map`](#promisefulmapobj-fn)
+
+_________________________________________________
+
+### `promiseful.applyEachOf(obj, ...args)`
+> Similar to `applyEach`, but works with objects. Applies the `args` to each function in the object.
+> The functions are invoked in the manner as defined by the associated function.
+
+> Note: The order of the values is not guaranteed.
+
+#### Parameters
+* `obj`
+    > An object where the values are **promiseful functions**.
+
+* `args`
+    > zero or more arguments to pass to the **promiseful functions**.
+
+#### Example
+```JS
+
+promiseful.applyEachOf(
+  {
+    taskA: addContent,
+    taskB: renameFile,
+    taskC: updateSchema
+  },
+  'plume'
+)
+.parallel() // Run parallel
+.then(() => {
+  // Finished operation
+})
+.catch((err) => {
+  console.error("Error running parallel:", err);
+});
+```
+
+#### See also:
 * [`promiseful.eachOf`](#promisefuleachofobj-fn)
+
+_________________________________________________
+
+### `promiseful.applyMapOf(obj, ...args)`
+> Similar to `applyEachOf`, but works with objects. Produces a new Object of values by applying the `args` to each function.
+> The functions are invoked in the manner as defined by the associated function.
+
+> Note: The order of the values is not guaranteed.
+
+#### Parameters
+* `obj`
+    > An object where the values are **promiseful functions**.
+
+* `args`
+    > zero or more arguments to pass to the **promiseful functions**.
+
+#### Example
+```JS
+
+promiseful.applyMapOf(
+  {
+    google: searchGoogle,
+    bing: searchBing,
+    yahoo: SearchYahoo,
+  }
+  'Robert Frost poem'
+)
+.parallel() // Run parallel
+.then((results) => {
+  // search results as an object
+  /*
+   {
+    google: [ google results ],
+    bing: [ bing results ],
+    yahoo: [ yahoo results ],
+   }
+   */
+})
+.catch((err) => {
+  console.error("Error searching sites:", err);
+});
+```
+
+#### See also:
+* [`promiseful.map`](#promisefulmapobj-fn)
 
 _________________________________________________
 
