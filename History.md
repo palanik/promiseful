@@ -1,3 +1,13 @@
+0.1.3 / 2017-05-26
+==================
+
+ ## Function collections
+
+ * promiseful.applyEachOf
+ * promiseful.applyMap
+ * promiseful.applyMapOf
+
+
 0.1.2 / 2017-05-21
 ==================
 
