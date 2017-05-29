@@ -95,6 +95,7 @@ _________________________________________________
 ### Other
 
 * [`promiseful.waterfall`](#promisefulwaterfallfns-initialvalue)
+* [`promiseful.auto`](#promisefulautoobj-limit)
 
 _________________________________________________
 
@@ -905,3 +906,54 @@ pf.then((result) => {
 
 #### See also:
 * [`promiseful.series`](#promisefulseriesfns)
+* [`promiseful.auto`](#promisefulautoobj-limit)
+
+_________________________________________________
+
+
+### `promiseful.auto(obj, limit)`
+> Analyzes and executes the task tree in the order of dependencies. Each **promiseful function** can optionally depend on other functions to finish and each function is run after all its dependents are resolved.
+
+> Each **promiseful function** is called with a result object of resolved values of their dependencies.
+
+> If any of the **promiseful function** rejects, further processing is halted and rejected with the reason.
+
+> After all the functions are completed it resolves with an object of all resolved values.
+
+#### Parameters
+* `obj`
+    > An object in which each key is the task name and the value is either a **promiseful function** (no dependencies) or an array of dependent task names, with the **promiseful function** itself the last item in the array.
+
+* `limit`
+    > Maximum number of **promiseful functions** to run in parallel. (See [`promiseful.parallelLimit`](#promisefulparallellimitfns-limit))
+
+#### Example
+```JS
+const pf = promiseful.auto({
+  input: getInputFn,
+  fetchFeed: ['input', fetchRemoteFeedFn],
+  fetchDB: ['input', fetchDBDataFn],
+  fetchFile: ['input', readFromFileFn],
+  merge: ['fetchFeed', 'fetchDB', 'fetchFile', mergeDataFn],
+  transform: ['merge', transformDataFn]
+  }, 2);
+
+
+pf.then((result) => {
+  // Result will be an object with resolved values
+  /*
+  {
+    input: inputResult,
+    fetchFeed: feed,
+    fetchDB: dbData,
+    fetchFile: fileContent,
+    merge: allData,
+    transform: finalData
+  }
+  */
+});
+```
+
+#### See also:
+* [`promiseful.series`](#promisefulseriesfns)
+* [`promiseful.waterfall`](#promisefulwaterfallfns-initialvalue)
