@@ -1,17 +1,7 @@
 import core from './core';
-import series from './series';
 import parallelLimit from './parallelLimit';
-import waterfall from './waterfall';
-import forever from './forever';
-import until from './until';
-import whilst from './whilst';
+import series from './series';
 import relay from './relay';
-
-import applyEach from './functions/applyEach';
-import applyEachOf from './functions/applyEachOf';
-import applyMap from './functions/applyMap';
-import applyMapOf from './functions/applyMapOf';
-import times from './functions/times';
 
 import each from './collections/each';
 import eachOf from './collections/eachOf';
@@ -22,6 +12,20 @@ import groupBy from './collections/groupBy';
 import every from './collections/every';
 import some from './collections/some';
 
+import applyEach from './functions/applyEach';
+import applyEachOf from './functions/applyEachOf';
+import applyMap from './functions/applyMap';
+import applyMapOf from './functions/applyMapOf';
+import times from './functions/times';
+
+import forever from './forever';
+import until from './until';
+import whilst from './whilst';
+
+
+import waterfall from './waterfall';
+import auto from './auto';
+
 const Promiseful = {
 
   // core
@@ -29,13 +33,10 @@ const Promiseful = {
   all: core.all.bind(core),
   race: core.race.bind(core),
   reduce: core.reduce.bind(core),
-
-  // other
   series,
   parallel: core.all.bind(core),
   parallelLimit,
   relay,
-  waterfall,
 
   // aliases
   inject: core.reduce.bind(core),
@@ -66,6 +67,10 @@ const Promiseful = {
   forever,
   until,
   whilst,
+
+  // Other
+  waterfall,
+  auto,
 };
 
 Promiseful.promise = (P) => {

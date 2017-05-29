@@ -15,7 +15,7 @@
     "extends": "airbnb/base"
   },
   "scripts": {
-    "lint": "eslint src/**",
+    "lint": "eslint --ignore-pattern 'src/mine/*' src/**",
     "build": "babel --presets es2015 src -d lib",
     "prepublish": "npm run build",
     "start": "node lib/",
