@@ -186,6 +186,54 @@ describe('auto', () => {
       })
       .catch(done);
     });
+
+    it('disjoint', (done) => {
+      const order = [];
+      const ret = promiseful.auto({
+        task1: (results) => new Promise((resolve, reject) => {
+          order.push(1);
+          setTimeout(() => resolve(1), 50);
+        }),
+        task2: (results) => new Promise((resolve, reject) => {
+          order.push(2);
+          setTimeout(() => resolve(2), 35);
+        }),
+        task3: ['task1', (results) => new Promise((resolve, reject) => {
+          order.push(3);
+          setTimeout(() => resolve(3), 25);
+        })],
+        task4: ['task2', (results) => new Promise((resolve, reject) => {
+          order.push(4);
+          setTimeout(() => resolve(4), 30);
+        })],
+        task5: ['task3', (results) => new Promise((resolve, reject) => {
+          order.push(5);
+          setTimeout(() => resolve(5), 45);
+        })],
+        task6: ['task4', (results) => new Promise((resolve, reject) => {
+          order.push(6);
+          setTimeout(() => resolve(6), 40);
+        })]
+      });
+
+      assert(ret !== null, 'Return is NOT null');
+      expect(ret).to.be.a('Promise');
+      ret.then((res) => {
+        expect(res).to.eql({
+          task1: 1,
+          task2: 2,
+          task3: 3,
+          task4: 4,
+          task5: 5,
+          task6: 6
+        });
+        expect(order).to.eql([1, 2, 3, 4, 5, 6]);
+        done();
+      })
+      .catch(done);
+    });
+
+
   });
 
   describe('errors', () => {
